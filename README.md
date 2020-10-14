@@ -6,6 +6,7 @@
 
 ## Authors
 Lam Long Vu - little_guys.html
+Connor Johns - home.html 
 
 ## General Info
 This browser based web application to ...

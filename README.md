@@ -4,6 +4,9 @@
 * [Technologies](#technologies)
 * [Contents](#content)
 
+## Authors
+Lam Long Vu - little_guys.html
+
 ## General Info
 This browser based web application to ...
 	

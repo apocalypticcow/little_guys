@@ -1,3 +1,9 @@
 #searchBar{
-    float: right;
+    
+}
+
+#searchBar>* {
+    display: inline;
+    width: auto;
+    margin-left: 2em;
 }

@@ -1,9 +1,0 @@
-#searchBar{
-    
-}
-
-#searchBar>* {
-    display: inline;
-    width: auto;
-    margin-left: 2em;
-}

@@ -23,3 +23,10 @@
     position: relative;
     top: 25%;
 }
+body{
+    background-image: url("../assets/images/map.PNG");
+}
+h1{
+    color: white;
+    text-align: center;
+}

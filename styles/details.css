@@ -1,0 +1,21 @@
+.foot{
+    display: flex;
+    position: fixed;
+    top: 90%;
+    height: 10vh;
+    width: 100%;
+    color: white;
+    background-color: #242424;
+    justify-content: space-evenly;
+}
+.toe{
+    border-left: 1px;
+    border-right: 1px;
+    width: 24vw;
+    text-align: center;
+    position:relative;
+}
+.toe > span{
+    position: relative;
+    top: 25%;
+}

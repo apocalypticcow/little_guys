@@ -1,0 +1,21 @@
+.categoryContainer{
+    display: flex;
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    align-items: center;
+    justify-content: center;
+}
+.categoryItem{
+    color: gray;
+    height: 100px;
+    width: 180px;
+    background-color: darkblue;
+    margin: 5px;
+    text-align: center;
+}
+.card-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

@@ -1,0 +1,15 @@
+.formContainer{
+    display: block;
+    text-align: center;
+    margin-top: 5vh;
+}
+.busForm{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10vh;
+    text-align: left;
+    display: inline-block;
+}
+.submit-btn{
+    margin-top: 2vh;
+}

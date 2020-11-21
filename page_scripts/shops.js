@@ -34,8 +34,6 @@ function build() {
     ]
 
     prepareData(shops);
-
-
 }
 
 $(document).ready(build);
@@ -57,6 +55,8 @@ function prepareData(shops) {
 function buildListElem(shop) {
     let row = createElem("div", "row no-gutters");
 
+    // let firstCol = createElem("div", "col mb-4");
+    // let secondCol = createElem("div", "col mb-4");
     let firstCol = createElem("div", "col-sm-5");
     let secondCol = createElem("div", "col-sm-7");
     row.appendChild(firstCol);

@@ -27,11 +27,15 @@
     height: 70vh;
     width: 80vw;
     font-size: 3vw;
-    color: white;
-    background-color: #242424;
+    color: black;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content:space-evenly;
     flex-direction: column;
     margin: auto;
+}
+
+body{
+    background-color: #ecf0f1;
 }

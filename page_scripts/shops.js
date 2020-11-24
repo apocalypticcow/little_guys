@@ -1,3 +1,5 @@
+import { db } from './firebase_api_littleguys.js';
+
 function build() {
     let content = document.getElementById("content");
 

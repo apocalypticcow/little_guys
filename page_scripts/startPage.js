@@ -18,26 +18,15 @@ function build() {
 
     attachEvent("change", searchInputId, onChanged);
     attachEvent("submit", "searchForm", onSubmitted);
+    
     const $searchInput = $('#' + searchInputId);
-
-    // $searchInput.autoComplete({
-    //     minLength: 3,
-    //     resolver: 'custom',
-    // preventEnter: true,
-    //     events: {
-    //         search: getPossibleProvinces
-    //     }
-    // });
     $searchInput.on("autocomplete.select", onSelected);
     $searchInput.autoComplete({
         minLength: 3,
         resolver: 'custom',
         preventEnter: true,
         events: {
-            search: function (qry, callback) {
-                let filteredList = validList.filter(item => item.includes(qry));
-                return callback(filteredList);
-            }
+            search: getPossibleProvinces
         }
     });
 }

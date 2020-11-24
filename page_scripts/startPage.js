@@ -10,7 +10,7 @@ const key = "?access_token=pk.eyJ1IjoiZ3JvdXAxMmJjaXQiLCJhIjoiY2todHkweTQyMGZhMT
 const searchInputId = 'searchInput';
 
 const searchInput = document.getElementById(searchInputId);
-const validList = ["Vancouver"];
+var validList = [];
 
 function build() {
 
@@ -18,21 +18,24 @@ function build() {
 
     attachEvent("change", searchInputId, onChanged);
     attachEvent("submit", "searchForm", onSubmitted);
-    
+    configAutoComplete();
+}
+
+function configAutoComplete() {
     const $searchInput = $('#' + searchInputId);
-    $searchInput.on("autocomplete.select", onSelected);
     $searchInput.autoComplete({
         minLength: 3,
         resolver: 'custom',
         preventEnter: true,
         events: {
-            search: getPossibleProvinces
+            search: getPossibleCities
         }
     });
+    $searchInput.on("autocomplete.select", onSelected);
 }
 
-function getPossibleProvinces(qry, callback) {
-    let uri = mapboxApiURI + cityDataType + qry + jsonResultsType + key;
+function getPossibleCities(qry, callback) {
+    const uri = mapboxApiURI + cityDataType + qry + jsonResultsType + key;
 
     fetch(encodeURI(uri))
         .then((response) => {
@@ -46,8 +49,9 @@ function getPossibleProvinces(qry, callback) {
 
 function extractNames(data, callback) {
     let possibleNames = data.features.map(feature => feature.place_name);
+
     validList = possibleNames;
-    return callback(possibleNames);;
+    callback(possibleNames);
 }
 
 function onChanged(event) {

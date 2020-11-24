@@ -23,10 +23,19 @@
     position: relative;
     top: 25%;
 }
-body{
-    background-image: url("../assets/images/map.PNG");
+.map-container{
+    margin: auto;
+    padding-top: 5vh;
+    position: relative;
+    height: 80vh;
+    width: 50vh;
 }
-h1{
-    color: white;
-    text-align: center;
-}
+.map-container-2{
+    overflow:hidden;
+    }
+    .map-container-2 iframe{
+    height:100%;
+    width:100%;
+    margin: auto;
+    position: relative;
+    }

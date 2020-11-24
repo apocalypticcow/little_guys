@@ -12,4 +12,14 @@
 }
 .submit-btn{
     margin-top: 2vh;
+    color: white;
+    background-color: #05AFF2;
+    border-color: #0476D9;
+}
+select{
+    margin-bottom: 2vh;
+    margin-top: 2vh;
+}
+form{
+    margin: 2vh;
 }

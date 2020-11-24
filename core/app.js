@@ -1,10 +1,13 @@
 import { db } from '../page_scripts/firebase_api_littleguys.js';
+import { attachEvent } from './utils.js';
+
+$(document).ready(start);
 
 let attachEventWrapper = (res) => attachEvent("submit", "searchBar", onSubmitted);
+
 function start() {
     $("#topBar-container").load("top_bar.html", attachEventWrapper);
 }
-
 
 function onSubmitted(event) {
     console.log("submitted");
@@ -18,10 +21,3 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
-function attachEvent(eventName, elementid, func) {
-    let element = document.getElementById(elementid);
-    element.addEventListener(eventName, func);
-}
-
-
-$(document).ready(start);

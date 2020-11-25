@@ -15,9 +15,10 @@ function onSubmitted(event) {
 
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
+        
         console.log("User is signed in");
+
     } else {
         console.log("No user signed in yet.");
     }
 });
-

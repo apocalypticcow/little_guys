@@ -1,41 +1,9 @@
-import { db } from './firebase_api_littleguys.js';
+import {
+    db
+} from './firebase_api_littleguys.js';
 
 function build() {
-    let content = document.getElementById("content");
-
-    let shops = [{
-            name: "LittleGuys",
-            distance: 100,
-            openingHours: "08:00-17:00",
-            totalRating: 5,
-        },
-        {
-            name: "Dummy shop 1",
-            distance: 1000,
-            openingHours: "08:00-17:00",
-            totalRating: 1,
-        },
-        {
-            name: "Dummy shop 2",
-            distance: 2000,
-            openingHours: "08:00-17:00",
-            totalRating: 2,
-        },
-        {
-            name: "Dummy shop 3",
-            distance: 3000,
-            openingHours: "08:00-17:00",
-            totalRating: 3,
-        },
-        {
-            name: "Dummy shop 4",
-            distance: 4000,
-            openingHours: "08:00-17:00",
-            totalRating: 4,
-        },
-    ]
-
-    prepareData(shops);
+    prepareData();
 }
 
 $(document).ready(build);
@@ -85,9 +53,6 @@ function buildListElem(shop) {
     card.appendChild(row);
     return card;
 }
-
-
-
 
 /////////////////////
 // Utility methods //

@@ -12,8 +12,7 @@ const searchInputId = 'searchInput';
 const searchInput = document.getElementById(searchInputId);
 var validList = [];
 
-function build() {
-
+function start() {
     searchInput.focus();
 
     attachEvent("change", searchInputId, onChanged);
@@ -70,9 +69,9 @@ function onSelected(event, item) {
 
 function onSubmitted(event) {
     event.preventDefault();
-    localStorage.setItem("user-location", searchInput.value);
+    localStorage.setItem(document.userLocKey, searchInput.value);
     window.location.href = '/home.html';
 }
 
 
-$(document).ready(build);
+$(document).ready(start);

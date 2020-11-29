@@ -5,11 +5,22 @@ import {
     attachEvent
 } from './utils.js';
 
+const onLoadingDone = function (contentToShowId) {
+    const spinner = document.getElementsByClassName('fa-spin')[0];
+    spinner.hidden = true;
+
+    const form = document.getElementById(contentToShowId);
+    form.hidden = false;
+}
+
 const appVersion = "1.0";
+document.appVersion = appVersion;
+document.onLoadingDone = onLoadingDone;
+
 $(document).ready(start);
 
 function start() {
-    document.appVersion = appVersion;
+
     document.userLocKey = "user-location";
     $("#topBar-container").load("top_bar.html", attachEventWrapper);
 
@@ -34,7 +45,7 @@ function uploadUserLocation(uid) {
     let updateUserData = function (doc) {
         let userDoc = doc.data();
         let storageLoc = localStorage.getItem(document.userLocKey);
-        
+
         if (doc.exists && !userDoc.location && storageLoc) {
             console.log("Updating user location since it's the first login");
 
@@ -43,7 +54,7 @@ function uploadUserLocation(uid) {
             });
         }
     }
-    
+
     userRef.get().then(updateUserData)
 }
 
@@ -58,7 +69,7 @@ function setNavItemsVisibility(isUserLoggedIn) {
     let navLogin = document.getElementById('navLogin');
     let navLogout = document.getElementById('navLogout');
 
-    navProfile.style.display = isUserLoggedIn ? "block" : "none";
-    navLogout.style.display = isUserLoggedIn ? "block" : "none";
-    navLogin.style.display = !isUserLoggedIn ? "block" : "none";
+    navProfile.hidden = !isUserLoggedIn ;
+    navLogout.hidden = !isUserLoggedIn ;
+    navLogin.hidden = isUserLoggedIn ;
 }

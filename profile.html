@@ -9,6 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
+    <!-- FontAwesome 5  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- Firebase CSS for Authentication UI -->
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
 
@@ -26,33 +29,37 @@
     <!-- Header Navigation Bar -->
     <div id="topBar-container"></div>
 
-    <form id="profileForm" class="needs-validation" novalidate>
-        <div class="form-group">
-            <label for="emailField">Email address</label>
-            <input id="emailField" disabled type="email" class="form-control" aria-describedby="emailHelp">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
+    <div id="content">
+        <i class="fa fa-circle-o-notch fa-spin fa-3x"></i>
+        <form hidden id="profileForm" class="container-fluid needs-validation" novalidate>
+            <div class="form-group">
+                <label for="emailField">Email address</label>
+                <input id="emailField" disabled type="email" class="form-control" aria-describedby="emailHelp">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                    else.</small>
+            </div>
 
-        <div class="form-group">
-            <label for="oldPasswordField">Old Password</label>
-            <input id="oldPasswordField" type="password" class="form-control">
-            <div id="old-pw-feedback" class="invalid-feedback"></div>
-        </div>
+            <div class="form-group">
+                <label for="oldPasswordField">Old Password</label>
+                <input id="oldPasswordField" type="password" class="form-control">
+                <div id="old-pw-feedback" class="invalid-feedback"></div>
+            </div>
 
-        <div class="form-group">
-            <label for="passwordField">New Password</label>
-            <input id="passwordField" type="password" class="form-control" required>
-            <div id="pw-feedback" class="invalid-feedback"></div>
-        </div>
+            <div class="form-group">
+                <label for="passwordField">New Password</label>
+                <input id="passwordField" type="password" class="form-control" required>
+                <div id="pw-feedback" class="invalid-feedback"></div>
+            </div>
 
-        <div id="locationSearcher" class="form-group">
-            <label for="searchInput">Enter your location</label>
-            <input id="searchInput" name="searchInput" class="form-control basicAutoComplete" type="search"
-                placeholder="Search" autocomplete="off" required>
-            <div id="loc-feedback" class="invalid-feedback">Location must be provided.</div>
-        </div>
-        <button id="submitBtn" type="submit" class="btn btn-primary">Save</button>
-    </form>
+            <div id="locationSearcher" class="form-group">
+                <label for="searchInput">Enter your location</label>
+                <input id="searchInput" name="searchInput" class="form-control basicAutoComplete" type="search"
+                    placeholder="Search" autocomplete="off" required>
+                <div id="loc-feedback" class="invalid-feedback">Location must be provided.</div>
+            </div>
+            <button id="submitBtn" type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
 
     <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">

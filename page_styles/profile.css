@@ -4,3 +4,10 @@
     left: 50%;
     transform: translate(-50%, -50%)
 }
+
+.fa-circle-o-notch{
+    position: absolute;
+    top: 50%;
+    left: 48.5%;
+    transform: translate(-50%, -50%)
+}

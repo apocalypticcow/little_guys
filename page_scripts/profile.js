@@ -10,40 +10,46 @@ import {
     isSearchValid
 } from '../core/autocomplete.js';
 
-let currentUser = () => {
-    return firebase.auth().currentUser;
-}
+var appVersion;
+const formId = "profileForm";
 
-firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        fillFormWithData(user);
-    }
-})
+let currentUser;
+
 
 $(document).ready(start);
 
 function start() {
-    attachEvent("submit", "profileForm", onSubmitted);
+    attachEvent("submit", formId, onSubmitted);
+
     configAutoComplete();
+
     $('#successToast').toast({
         // configuring toast to stay for 3 sec
         delay: 3000
     });
 }
 
+firebase.auth().onAuthStateChanged(async function (user) {
+    if (user) {
+        currentUser = user;
+        await fillFormWithData(user);
+    }
+    document.onLoadingDone(formId);
+})
+
 function onSubmitted(event) {
-    let form = getElemById("profileForm");
+    let form = getElemById(formId);
     if (!form.checkValidity()) {
         event.preventDefault();
         event.stopPropagation();
     }
 
     let email = currentUser.email;
+    console.log()
     let oldPw = getElemById('oldPasswordField').value;
     let credential = firebase.auth.EmailAuthProvider.credential(email, oldPw);
 
     if (!isSearchValid) {
-        console.log("asd");
         onFormValidated();
         return;
     }
@@ -73,7 +79,7 @@ function onPwUpdateError(error) {
     showInvalidity(error.message, 'passwordField', 'pw-feedback');
 }
 
-function updateUser(params) {
+function updateUser() {
     currentUser.update({
             location: getElemById('searchInput').value
         })
@@ -93,12 +99,12 @@ function showInvalidity(message, fieldId, feedbackId) {
 }
 
 function onFormValidated() {
-    const form = getElemById("profileForm");
+    const form = getElemById(formId);
     form.classList.add('was-validated');
 }
 
-function fillFormWithData(user) {
-    getUser(user.uid, (snap) => {
+async function fillFormWithData(user) {
+    await getUser(user.uid, (snap) => {
         let userData = snap.data();
         getElemById('emailField').value = userData.email;
         getElemById('searchInput').value = userData.location;

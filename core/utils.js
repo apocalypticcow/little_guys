@@ -1,4 +1,8 @@
 
+function getElemById(id) {
+    return document.getElementById(id);
+}
+
 function attachEvent(eventName, elementid, func) {
     let element = document.getElementById(elementid);
     element.addEventListener(eventName, func);
@@ -31,6 +35,7 @@ function setAttribute(el, attrs) {
 }
 
 export{
+    getElemById,
     attachEvent,
     onSubmitted,
     createElem,

@@ -1,76 +1,57 @@
 import {
-    attachEvent
+    attachEvent,
+    getElemById
 } from '../core/utils.js';
 
-const mapboxApiURI = "https://api.mapbox.com/geocoding/v5/mapbox.";
-const provinceDataType = "region/";
-const cityDataType = "places/";
-const jsonResultsType = ".json";
-const key = "?access_token=pk.eyJ1IjoiZ3JvdXAxMmJjaXQiLCJhIjoiY2todHkweTQyMGZhMTJ5cDVscGlvZWQ3cCJ9.Vr97MSaaSle3rnBNIwW7MQ";
-const searchInputId = 'searchInput';
+import {
+    validList,
+    configAutoComplete,
+    searchInputId
+} from '../core/autocomplete.js';
 
-const searchInput = document.getElementById(searchInputId);
-var validList = [];
+const searchInput = getElemById(searchInputId);
+const formId = "searchForm";
+const form = getElemById(formId);
+const locFeedback = getElemById('loc-feedback');
+let formInvalid = true;
 
 function start() {
     searchInput.focus();
 
     attachEvent("change", searchInputId, onChanged);
-    attachEvent("submit", "searchForm", onSubmitted);
-    configAutoComplete();
-}
-
-function configAutoComplete() {
-    const $searchInput = $('#' + searchInputId);
-    $searchInput.autoComplete({
-        minLength: 3,
-        resolver: 'custom',
-        preventEnter: true,
-        events: {
-            search: getPossibleCities
-        }
-    });
-    $searchInput.on("autocomplete.select", onSelected);
-}
-
-function getPossibleCities(qry, callback) {
-    const uri = mapboxApiURI + cityDataType + qry + jsonResultsType + key;
-
-    fetch(encodeURI(uri))
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => extractNames(data, callback))
-        .catch((err) => {
-            // Do something for an error here
-        });
-}
-
-function extractNames(data, callback) {
-    let possibleNames = data.features.map(feature => feature.place_name);
-
-    validList = possibleNames;
-    callback(possibleNames);
+    attachEvent("submit", formId, onSubmitted);
+    configAutoComplete(onSelected);
 }
 
 function onChanged(event) {
     // target is the element triggered this event
     let input = event.target;
 
+    form.classList.remove('was-validated');
+    locFeedback.innerText = "Location must be provided.";
+
     // set canSubmit so submit button can be set to enabled
-    let submitBtn = document.getElementById("submitBtn");
-    submitBtn.disabled = !validList.includes(input.value);
+    formInvalid = !validList.includes(input.value);
 }
 
 function onSelected(event, item) {
     // item here is the selected value
-    submitBtn.disabled = !validList.includes(item);
+    formInvalid = !validList.includes(item);
 }
 
 function onSubmitted(event) {
     event.preventDefault();
-    localStorage.setItem(document.userLocKey, searchInput.value);
-    window.location.href = '/home.html';
+    if (formInvalid) {
+        searchInput.setCustomValidity("Please select an item from the list!");
+        
+        if (searchInput.value != "") {
+            locFeedback.innerText = "Please select an item from the list!";
+        }
+        form.classList.add('was-validated');
+    } else {
+        localStorage.setItem(document.userLocKey, searchInput.value);
+        window.location.href = '/home.html';
+    }
 }
 
 

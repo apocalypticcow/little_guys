@@ -6,16 +6,16 @@ import {
     attachEvent
 } from '../core/utils.js';
 import {
-    validList,
     configAutoComplete,
-    searchInputId
+    isSearchValid
 } from '../core/autocomplete.js';
 
-const submitBtn = document.getElementById("submitBtn");
-let userId;
+let currentUser = () => {
+    return firebase.auth().currentUser;
+}
+
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-        userId = user.uid;
         fillFormWithData(user);
     }
 })
@@ -23,73 +23,77 @@ firebase.auth().onAuthStateChanged(function (user) {
 $(document).ready(start);
 
 function start() {
-    attachEvent("change", searchInputId, onChanged);
     attachEvent("submit", "profileForm", onSubmitted);
-    configAutoComplete(onSelected);
-
+    configAutoComplete();
     $('#successToast').toast({
+        // configuring toast to stay for 3 sec
         delay: 3000
     });
 }
 
-function onChanged(event) {
-    // target is the element triggered this event
-    let input = event.target;
-
-    // set canSubmit so submit button can be set to enabled
-    submitBtn.disabled = !validList.includes(input.value);
-}
-
-function onSelected(event, item) {
-    // item here is the selected value
-    submitBtn.disabled = !validList.includes(item);
-}
-
 function onSubmitted(event) {
-    event.preventDefault();
-    const form = getElemById("profileForm");
-    if (form.checkValidity() === false) {
+    let form = getElemById("profileForm");
+    if (!form.checkValidity()) {
         event.preventDefault();
         event.stopPropagation();
     }
 
-    const oldField = getElemById('oldPasswordField');
+    let email = currentUser.email;
+    let oldPw = getElemById('oldPasswordField').value;
+    let credential = firebase.auth.EmailAuthProvider.credential(email, oldPw);
 
-    let user = firebase.auth().currentUser;
+    if (!isSearchValid) {
+        console.log("asd");
+        onFormValidated();
+        return;
+    }
 
-    let credential = firebase.auth.EmailAuthProvider.credential(user.email, oldField.value);
+    currentUser.reauthenticateWithCredential(credential)
+        .then(updatePw)
+        .catch(onReAuthenticateError);
+}
 
-    const updateUser = () =>
-        user.update({
-            location: getElemById('searchInput').value
-        }).then(onSaveSuccess);
+function onReAuthenticateError(error) {
+    showInvalidity(error.message, 'oldPasswordField', 'old-pw-feedback');
 
     const pwField = getElemById('passwordField');
-    const updatePw = () => user.updatePassword(pwField.value)
-        .then(updateUser)
-        .catch((error) => showInvalidity(error.message, 'passwordField', 'pw-feedback'));
 
-    user.reauthenticateWithCredential(credential)
-        .then(updatePw)
-        .catch((error) => {
-            showInvalidity(error.message, 'oldPasswordField', 'old-pw-feedback');
-
-            if (!pwField.value || pwField.value.length > 0) {
-                showInvalidity("Password must not be empty.", 'passwordField', 'pw-feedback')
-            }
-        });
-
+    if (!pwField.value || pwField.value.length > 0) {
+        showInvalidity("Password must not be empty.", 'passwordField', 'pw-feedback')
+    }
 }
-function onSaveSuccess() {
+
+function updatePw() {
+    currentUser.updatePassword(getElemById('passwordField').value)
+        .then(updateUser)
+        .catch(onPwUpdateError);
+}
+
+function onPwUpdateError(error) {
+    showInvalidity(error.message, 'passwordField', 'pw-feedback');
+}
+
+function updateUser(params) {
+    currentUser.update({
+            location: getElemById('searchInput').value
+        })
+        .then(onPageSaveSuccess);
+}
+
+function onPageSaveSuccess() {
     $('#successToast').toast('show');
 }
 
 function showInvalidity(message, fieldId, feedbackId) {
-    const form = getElemById("profileForm");
     const pwField = getElemById(fieldId);
     pwField.setCustomValidity(message);
     const pwValidFeedback = getElemById(feedbackId);
     pwValidFeedback.innerText = message;
+    onFormValidated();
+}
+
+function onFormValidated() {
+    const form = getElemById("profileForm");
     form.classList.add('was-validated');
 }
 

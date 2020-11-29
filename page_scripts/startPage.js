@@ -4,44 +4,32 @@ import {
 } from '../core/utils.js';
 
 import {
-    validList,
+
     configAutoComplete,
-    searchInputId
+    searchInputId,
+    isSearchValid
 } from '../core/autocomplete.js';
 
-const searchInput = getElemById(searchInputId);
-const formId = "searchForm";
-const form = getElemById(formId);
-const locFeedback = getElemById('loc-feedback');
-let formInvalid = true;
+let searchInput = getElemById(searchInputId);
+let formId = "searchForm";
+let form = getElemById(formId);
+let locFeedback = getElemById('loc-feedback');
 
 function start() {
     searchInput.focus();
-
-    attachEvent("change", searchInputId, onChanged);
+    console.log(isSearchValid);
     attachEvent("submit", formId, onSubmitted);
-    configAutoComplete(onSelected);
+    configAutoComplete(onAutoCompleteChange);
 }
 
-function onChanged(event) {
-    // target is the element triggered this event
-    let input = event.target;
-
+function onAutoCompleteChange(){
     form.classList.remove('was-validated');
     locFeedback.innerText = "Location must be provided.";
-
-    // set canSubmit so submit button can be set to enabled
-    formInvalid = !validList.includes(input.value);
-}
-
-function onSelected(event, item) {
-    // item here is the selected value
-    formInvalid = !validList.includes(item);
 }
 
 function onSubmitted(event) {
     event.preventDefault();
-    if (formInvalid) {
+    if (!isSearchValid) {
         searchInput.setCustomValidity("Please select an item from the list!");
         
         if (searchInput.value != "") {
@@ -53,6 +41,5 @@ function onSubmitted(event) {
         window.location.href = '/home.html';
     }
 }
-
 
 $(document).ready(start);

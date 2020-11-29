@@ -1,13 +1,23 @@
+import {
+    getElemById,
+    attachEvent
+} from '../core/utils.js';
+
 const mapboxApiURI = "https://api.mapbox.com/geocoding/v5/mapbox.";
-const provinceDataType = "region/";
 const cityDataType = "places/";
+// const provinceDataType = "region/";
 const jsonResultsType = ".json";
 const key = "?access_token=pk.eyJ1IjoiZ3JvdXAxMmJjaXQiLCJhIjoiY2todHkweTQyMGZhMTJ5cDVscGlvZWQ3cCJ9.Vr97MSaaSle3rnBNIwW7MQ";
-let validList = [];
-const searchInputId = "searchInput";
 
-function configAutoComplete(onSelected) {
-    const $searchInput = $('#' + searchInputId);
+const searchInputId = "searchInput";
+let validList = [];
+let isSearchValid = false;
+let onChangedCallBack = function () {};
+
+function configAutoComplete(onChangedCallBack) {
+    onChangedCallBack = onChangedCallBack;
+
+    const $searchInput = $(getElemById(searchInputId));
     $searchInput.autoComplete({
         minLength: 3,
         resolver: 'custom',
@@ -16,7 +26,24 @@ function configAutoComplete(onSelected) {
             search: getPossibleCities
         }
     });
+
+    attachEvent("change", searchInputId, onChanged);
     $searchInput.on("autocomplete.select", onSelected);
+}
+
+function onSelected(event, item) {
+    // item here is the selected value
+    isSearchValid = validList.includes(item) && item !== "";
+}
+
+function onChanged(event) {
+    // target is the element triggered this event
+    let input = event.target;
+    
+    // set canSubmit so submit button can be set to enabled
+    isSearchValid = validList.includes(input.value) && item !== "";
+    
+    onChangedCallBack()
 }
 
 function getPossibleCities(qry, callback) {
@@ -38,8 +65,8 @@ function extractNames(data, callback) {
     callback(possibleNames);
 }
 
-
 export {
+    isSearchValid,
     validList,
     configAutoComplete,
     searchInputId

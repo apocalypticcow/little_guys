@@ -34,6 +34,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
         currentUser = user;
         await fillFormWithData(user);
     }
+    
     document.onLoadingDone(formId);
 })
 
@@ -104,14 +105,17 @@ function onFormValidated() {
 }
 
 async function fillFormWithData(user) {
-    await getUser(user.uid, (snap) => {
-        let userData = snap.data();
-        getElemById('emailField').value = userData.email;
-        getElemById('searchInput').value = userData.location;
-    });
+    await getUserFromDb(user.uid);
 }
 
-function getUser(userId, callBack) {
+async function getUserFromDb(userId) {
     let userRef = db.collection('users').doc(userId);
-    userRef.get().then(callBack);
+    await userRef.get().then(afterGet);
+}
+
+async function afterGet(snap) {
+    let userData = snap.data();
+    getElemById('emailField').value = userData.email;
+    getElemById('searchInput').value = userData.location;
+    return Promise.resolve();
 }

@@ -6,7 +6,8 @@ import {
 import {
     configAutoComplete,
     searchInputId,
-    isSelectionValid
+    isSelectionValid,
+    getCity
 } from '../core/autocomplete.js';
 
 let searchInput = getElemById(searchInputId);
@@ -35,7 +36,7 @@ function onSubmitted(event) {
         }
         form.classList.add('was-validated');
     } else {
-        localStorage.setItem(document.userLocKey, searchInput.value);
+    localStorage.setItem(document.userLocKey, getCity());
         window.location.href = '/home.html';
     }
 }

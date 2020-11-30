@@ -9,7 +9,8 @@ import {
     validList,
     searchInputId,
     configAutoComplete,
-    isSelectionValid
+    isSelectionValid,
+    getCity
 } from '../core/autocomplete.js';
 
 const formId = "profileForm";
@@ -93,7 +94,7 @@ async function onSubmitted(event) {
 async function updateUser() {
     await db.collection('users').doc(currentUser.uid)
         .update({
-            location: getElemById(searchInputId).value
+            location: getCity()
         })
         .then()
         .catch(error => console.log(error));

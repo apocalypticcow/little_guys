@@ -1,12 +1,17 @@
 body {
     background-color: #F2F2F2;
+    padding-top: 10vh;
 }
 
 #searchBar>* {
     margin-left: 10px;
 }
 
-/* Palette #2 */
+.fa-circle-o-notch{
+    color: #F2B705;
+}
+
+/* Palette #1 */
 
 /* #034AA6 */
 /* #0476D9 */
@@ -23,14 +28,14 @@ body {
 }
 
 .btn-outline-success {
-    color: #F29F05;
-    background-color: transparent;
+    color: #FFFFFF;
+    background-color: #F29F05;
     background-image: none;
     border-color: #F29F05;
 }
 
 .btn-outline-success:hover {
-    color: #fff;
+    color: #FFFFFF;
     background-color: #F29F05;
     border-color: #F29F05;
 }

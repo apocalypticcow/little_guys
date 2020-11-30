@@ -9,6 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
+    <!-- FontAwesome 5  -->
+    <script src="https://kit.fontawesome.com/26da0e4274.js" crossorigin="anonymous"></script>
+
     <!-- Firebase CSS for Authentication UI -->
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
 
@@ -25,7 +28,53 @@
     <!-------------------------------------->
     <!-- Header Navigation Bar -->
     <div id="topBar-container"></div>
-    <div>PROFILE</div>
+
+    <div id="content">
+        <i id="pageSpinner" class="fa fa-circle-o-notch fa-spin fa-3x"></i>
+        <form hidden id="profileForm" class="container-fluid needs-validation" novalidate>
+            <div class="form-group">
+                <label for="emailField">Email address</label>
+                <input id="emailField" disabled type="email" class="form-control" aria-describedby="emailHelp">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                    else.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="oldPasswordField">Old Password</label>
+                <input id="oldPasswordField" type="password" class="form-control" required>
+                <div id="old-pw-feedback" class="invalid-feedback">Password must be provided!</div>
+                <!-- <div id="old-pw-feedback" class="invalid-feedback">Password must be provided!</div> -->
+            </div>
+
+            <div class="form-group">
+                <label for="passwordField">New Password</label>
+                <input id="passwordField" type="password" class="form-control" required>
+                <div id="pw-feedback" class="invalid-feedback">Location must be provided!</div>
+            </div>
+
+            <div id="locationSearcher" class="form-group">
+                <label for="searchInput">Enter your location</label>
+                <input id="searchInput" name="searchInput" class="form-control basicAutoComplete" type="search"
+                    placeholder="Search" autocomplete="off" required>
+                <div id="loc-feedback" class="invalid-feedback">Location must be provided!</div>
+            </div>
+            <button id="submitBtn" type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+
+    <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <i class="fas fa-check-circle text-success"></i>
+            <strong class="mr-auto">Success!</strong>
+            <!-- <small>11 mins ago</small> -->
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Profile has been updated!
+        </div>
+    </div>
 
     <!-------------------------------------------->
     <!-- The following is JS for functionality  -->
@@ -39,7 +88,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
-
+    <script
+        src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js">
+    </script>
     <!-- Firebase libraries from CDN -->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>

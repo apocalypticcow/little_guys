@@ -1,12 +1,33 @@
-import { db } from './firebase_api_littleguys.js';
-
+import {
+    db
+} from './firebase_api_littleguys.js';
 
 // Initialize the FirebaseUI Widget using Firebase.
 let auth = firebase.auth();
+
+var queryString = decodeURIComponent(window.location.search);
+if (queryString) {
+
+    let query = queryString.slice(1, queryString.length);
+    if (query === "logout") {
+        auth.signOut()
+            .then(() => {
+                window.location.replace("home.html");
+            });
+
+        // return;
+    };
+}
+
+// const myParam = urlParams.get('myParam');
+
+
+
 var ui = new firebaseui.auth.AuthUI(auth);
 
 var uiConfig = {
     callbacks: {
+
         signInSuccessWithAuthResult: function (authResult, redirectUrl) {
             // User successfully signed in.
             // Return type determines whether we continue the redirect automatically
@@ -26,7 +47,7 @@ var uiConfig = {
                         email: user.email
                     }).then(function () {
                         console.log("New user added to firestore");
-                        window.location.assign("profile.html");
+                        window.location.assign("home.html");
                     })
                     .catch(function (error) {
                         console.log("Error adding new user: " + error);
@@ -39,6 +60,8 @@ var uiConfig = {
         uiShown: function () {
             // The widget is rendered.
             // Hide the loader.
+            document.getElementById('');
+
             let loader = document.getElementById('loader');
             if (loader) {
                 loader.style.display = 'none';
@@ -58,9 +81,9 @@ var uiConfig = {
         //firebase.auth.PhoneAuthProvider.PROVIDER_ID
     ],
     // Terms of service url.
-    tosUrl: 'login.html',
+    tosUrl: 'home.html',
     // Privacy policy url.
-    privacyPolicyUrl: 'login.html',
+    privacyPolicyUrl: 'home.html',
     accountChooserEnabled: false
 };
 // The start method will wait until the DOM is loaded.

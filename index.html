@@ -23,11 +23,20 @@
     <!-- Header Navigation Bar -->
     <div id="topBar-container"></div>
     <div id="content">
-        <div id="form">
-            <label for="searchInput">Enter your location</label>
-            <input id="searchInput" name="searchInput" type="search" placeholder="Search" aria-label="Search">
-        </div>
+        <form id="searchForm" class="container-fluid needs-validation" novalidate>
+
+            <div id="locationSearcher" class="form-group">
+                <label for="searchInput">Enter your location</label>
+                <input id="searchInput" name="searchInput" class="form-control basicAutoComplete" type="search"
+                    placeholder="Search" autocomplete="off">
+                <div id="loc-feedback" class="invalid-feedback">Location must be provided.</div>
+            </div>
+
+            <button id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
     </div>
+
     <!----------------------------------------------->
     <!-- JS: Boostrap, Firebase, API related    -->
     <!----------------------------------------------->
@@ -38,6 +47,9 @@
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js">
     </script>
 
     <!-- Firebase libraries from CDN -->

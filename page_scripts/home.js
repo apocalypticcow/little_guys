@@ -37,7 +37,7 @@ function renderBusiness(doc){
 
     // upon anchor tag click, sets the correct id to local storage.
     a.addEventListener("click", (e) =>{
-        let docId = e.target.parentElement.getAttribute("data-id");
+        var docId = e.target.parentElement.getAttribute("data-id");
         localStorage.setItem("docId", docId);  
         console.log(docId);
         redirect();      

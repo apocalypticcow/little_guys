@@ -66,3 +66,19 @@ li span:nth-child(5){
     border-color: #0476D9;
     height: 30px;
 }
+li a{
+    text-decoration: none;
+    background-color: #05AFF2;
+    color: white;
+    font-size: 15px;
+    height: 30px;
+    width: 60px;
+    padding: 5px 8px;
+    text-align: center;
+    float: right;
+
+}
+li a:hover{
+    text-decoration: none;
+    color: white;
+}

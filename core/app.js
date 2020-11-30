@@ -31,7 +31,6 @@ function start() {
             if (user) {
                 console.log("User is signed in");
                 uploadUserLocation(user.uid);
-                document.currentUser = user;
                 isUserSignedIn = true;
             } else {
                 console.log("No user signed in yet.");

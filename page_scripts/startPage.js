@@ -36,7 +36,7 @@ function onSubmitted(event) {
         }
         form.classList.add('was-validated');
     } else {
-    localStorage.setItem(document.userLocKey, getCity());
+    localStorage.setItem("user-location", getCity());
         window.location.href = '/home.html';
     }
 }

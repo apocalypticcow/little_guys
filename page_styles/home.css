@@ -56,9 +56,7 @@ li span:nth-child(5){
     position: relative;
     width: 80vw;
 }
-#searchBar{
-    width: 30vw;
-}
+
 .search{
     background-color: #05AFF2;
     color: white;
@@ -67,7 +65,7 @@ li span:nth-child(5){
     height: 30px;
     border-radius: 5px;
 }
-li a{
+#business-list li a{
     text-decoration: none;
     background-color: #05AFF2;
     color: white;
@@ -80,7 +78,7 @@ li a{
     border-radius: 5px;
 
 }
-li a:hover{
+#business-list li a:hover{
     text-decoration: none;
     color: white;
 }

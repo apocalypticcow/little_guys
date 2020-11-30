@@ -11,6 +11,9 @@ body {
     color: #F2B705;
 }
 
+form>button{
+    width: 100%;
+}
 /* Palette #1 */
 
 /* #034AA6 */

@@ -22,7 +22,7 @@ function renderBusiness(doc){
     address.textContent = doc.data().address;
     city.textContent = doc.data().city;
     province.textContent = doc.data().province;
-    a.href = "./details.html";
+    a.href = "#";
     a.textContent = "Details";
     
 
@@ -34,6 +34,19 @@ function renderBusiness(doc){
     li.appendChild(a);
 
     businessList.appendChild(li);
+
+    // upon anchor tag click, sets the correct id to local storage.
+    a.addEventListener("click", (e) =>{
+        let docId = e.target.parentElement.getAttribute("data-id");
+        localStorage.setItem("docId", docId);  
+        console.log(docId);
+        redirect();      
+    })
+
+    // redirects to details.html page. 
+    function redirect(){
+        window.location.href = "./details.html";
+    }
 }
 
 // Search button functionality

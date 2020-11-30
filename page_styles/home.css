@@ -1,21 +1,68 @@
-.categoryContainer{
-    display: flex;
-    margin-top: 10vh;
-    margin-bottom: 10vh;
-    align-items: center;
-    justify-content: center;
+ul{
+    list-style-type: none;
+    padding: 2px;
 }
-.categoryItem{
-    color: gray;
-    height: 100px;
-    width: 180px;
-    background-color: darkblue;
-    margin: 5px;
-    text-align: center;
+.content{
+    width: 80vw;
+    margin: auto;
+    margin-top: 1vh;
 }
-.card-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+#business-list > li{
+    padding: 1.5vh;
+    background: #fff;
+    font-size: 20px;
+    color: #555;
+    position: relative;
+    border-bottom: 1px solid #e6e6e6;
+    height: 117px;
+    margin-bottom: 1vh;
+}
+
+li span:nth-child(1){
+    font-size: 25px;
+    font-weight: 500;
+    display: block;
+}
+li span:nth-child(2){
+    margin-top: 8px;
+    color: #999;
+    margin-left: 3px;
+    font-size: 18px;
+    display: block;
+}
+li span:nth-child(3){
+    margin-top: 8px;
+    color: #999;
+    font-size: 16px;
+    margin-left: 3px;
+}
+li span:nth-child(4){
+    margin-top: 8px;
+    color: #999;
+    margin-left: .5vw;
+    font-size: 16px;
+}
+li span:nth-child(5){
+    margin-top: 8px;
+    color: #999;
+    margin-left: .5vw;
+    font-size: 16px;
+}
+
+#search-container{
+    margin-top: 4vh;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 80vw;
+}
+#searchBar{
+    width: 30vw;
+}
+.search{
+    background-color: #05AFF2;
+    color: white;
+    border: 2px;
+    border-color: #0476D9;
+    height: 30px;
 }

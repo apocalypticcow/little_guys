@@ -25,38 +25,17 @@
     <div id="content">
     </div>
 
-    <div class="categoryContainer">
-        <div class="categoryItem">category</div>
-        <div class="categoryItem">category</div>
-        <div class="categoryItem">category</div>
-        <div class="categoryItem">category</div>
-    </div>
+    <!-- Search form -->
+    <form id="search-container">
+        <input id="searchBar" type="text" placeholder="Search">
+        <button class="search">Search</button>
+    </form>
 
-    <div class="card-container">
-        <div class="card" style="width: 18rem;">
-            <img src="/assets/images/store.png" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Store name</h5>
-              <p class="card-text">Description and location of business. In final version, images will be on the right, entire section will be a button.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-          <div class="card" style="width: 18rem;">
-            <img src="/assets/images/store.png" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Store name</h5>
-              <p class="card-text">Description and location of business. In final version, images will be on the right, entire section will be a button.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
-          <div class="card" style="width: 18rem;">
-            <img src="/assets/images/store.png" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Store name</h5>
-              <p class="card-text">Description and location of business. In final version, images will be on the right, entire section will be a button.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
+    <div class="content">
+        <form id="search-form"></form>
+
+        <ul id="business-list"></ul>
+
     </div>
 
     <!----------------------------------------------->
@@ -80,6 +59,7 @@
     <!-- JS files: Your own JavaScript functions included here    -->
     <!--------------------------------------------------------------------->
     <script type="module" src="core/app.js"></script>
+    <script type="module" src="page_scripts/home.js"></script>
 
 </body>
 

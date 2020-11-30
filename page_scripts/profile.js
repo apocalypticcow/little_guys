@@ -22,14 +22,17 @@ function start() {
 
     configAutoComplete();
     configInputs();
-    $('#successToast').toast({
+    let toast = getElemById('successToast');
+    $(toast).toast({
         // configuring toast to stay for 3 sec
         delay: 3000
     });
+    $(toast).on('hidden.bs.toast', () => toast.style.zIndex = -1);
 }
 
 let currentUser;
-firebase.auth().onAuthStateChanged(async function (user) {
+firebase.auth().onAuthStateChanged(authStateChanged);
+async function authStateChanged(user) {
     if (user) {
         currentUser = user;
 
@@ -39,7 +42,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
     }
 
     document.onLoadingDone(formId);
-})
+}
 
 function configInputs() {
     let inputs = document.getElementsByTagName('input')
@@ -68,19 +71,11 @@ function setFormSubmitionAccess(turnOn) {
     });
 }
 
-function onSubmitted(event) {
-
-    let form = getElemById(formId);
-    if (!form.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
+async function onSubmitted(event) {
+    event.preventDefault();
+    event.stopPropagation();
 
     setFormSubmitionAccess(false);
-
-    let credential = firebase.auth
-        .EmailAuthProvider
-        .credential(currentUser.email, getElemById('oldPasswordField').value);
 
     let anyEmptyInputs = inputsToToggle.find(elem => elem.value !== "") == undefined;
     if (!anyEmptyInputs && !isSelectionValid) {
@@ -90,72 +85,39 @@ function onSubmitted(event) {
         return;
     }
 
-    currentUser.reauthenticateWithCredential(credential)
-        .then(updatePw)
-        .catch(onReAuthenticateError);
+    await updateUser();
+
+    afterProfileSaved();
 }
 
-function updatePw() {
-    currentUser.updatePassword(getElemById('passwordField').value)
-        .then(updateUser)
-        .catch(onPwUpdateError);
-}
-
-function onReAuthenticateError(error) {
-    showInvalid(error.message, 'oldPasswordField', 'old-pw-feedback');
-
-    const pwField = getElemById('passwordField');
-
-    let errorMsg = pwField.value.length === 0 ? "Password must not be empty." : " ";
-    showInvalid(errorMsg, 'passwordField', 'pw-feedback');
-
-}
-
-function onPwUpdateError(error) {
-    // we need to clear it old pw field validity like this, 
-    // so we won't confusingly give negative feedback to the 
-    // user using their old pw
-    getElemById('oldPasswordField').setCustomValidity("");
-
-    showInvalid(error.message, 'passwordField', 'pw-feedback');
-}
-
-function updateUser() {
-    currentUser.updateProfile({
-            location: getElemById('searchInput').value
+async function updateUser() {
+    await db.collection('users').doc(currentUser.uid)
+        .update({
+            location: getElemById(searchInputId).value
         })
-        .then(onPageSaveSuccess);
+        .then()
+        .catch(error => console.log(error));
 }
 
-function onPageSaveSuccess() {
-    $('#successToast').toast('show');
-    setFormSubmitionAccess(true);
-}
+function afterProfileSaved() {
+    let toast = getElemById('successToast');
+    toast.style.zIndex = 0;
+    $(toast).toast('show');
 
-function showInvalid(message, fieldId, feedbackId) {
-    const pwField = getElemById(fieldId);
-    pwField.setCustomValidity(message);
-    const pwValidFeedback = getElemById(feedbackId);
-    pwValidFeedback.innerText = message;
-    onFormValidated();
-}
-
-function onFormValidated() {
-    const form = getElemById(formId);
-    form.classList.add('was-validated');
     setFormSubmitionAccess(true);
 }
 
 async function fillFormWithData(user) {
-    await getUserFromDb(user.uid);
+    let snap = await getUserFromDb(user.uid);
+    fillForm(snap);
 }
 
 async function getUserFromDb(userId) {
     let userRef = db.collection('users').doc(userId);
-    await userRef.get().then(afterGet);
+    return await userRef.get();
 }
 
-async function afterGet(snap) {
+function fillForm(snap) {
     let userData = snap.data();
 
     getElemById('emailField').value = userData.email;

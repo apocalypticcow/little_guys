@@ -2,14 +2,15 @@ import {
     db
 } from '../page_scripts/firebase_api_littleguys.js';
 import {
-    attachEvent
+    attachEvent,
+    getElemById
 } from './utils.js';
 
 const onLoadingDone = function (contentToShowId) {
-    const spinner = document.getElementsByClassName('fa-spin')[0];
+    const spinner = getElemById('pageSpinner');
     spinner.hidden = true;
 
-    const form = document.getElementById(contentToShowId);
+    const form = getElemById(contentToShowId);
     form.hidden = false;
 }
 
@@ -65,9 +66,9 @@ function onSubmitted(event) {
 }
 
 function setNavItemsVisibility(isUserLoggedIn) {
-    let navProfile = document.getElementById('navProfile');
-    let navLogin = document.getElementById('navLogin');
-    let navLogout = document.getElementById('navLogout');
+    let navProfile = getElemById('navProfile');
+    let navLogin = getElemById('navLogin');
+    let navLogout = getElemById('navLogout');
 
     navProfile.hidden = !isUserLoggedIn ;
     navLogout.hidden = !isUserLoggedIn ;

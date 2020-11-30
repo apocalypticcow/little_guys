@@ -4,10 +4,9 @@ import {
 } from '../core/utils.js';
 
 import {
-
     configAutoComplete,
     searchInputId,
-    isSearchValid
+    isSelectionValid
 } from '../core/autocomplete.js';
 
 let searchInput = getElemById(searchInputId);
@@ -17,7 +16,6 @@ let locFeedback = getElemById('loc-feedback');
 
 function start() {
     searchInput.focus();
-    console.log(isSearchValid);
     attachEvent("submit", formId, onSubmitted);
     configAutoComplete(onAutoCompleteChange);
 }
@@ -29,7 +27,7 @@ function onAutoCompleteChange(){
 
 function onSubmitted(event) {
     event.preventDefault();
-    if (!isSearchValid) {
+    if (!isSelectionValid) {
         searchInput.setCustomValidity("Please select an item from the list!");
         
         if (searchInput.value != "") {

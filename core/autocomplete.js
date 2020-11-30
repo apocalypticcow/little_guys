@@ -5,13 +5,12 @@ import {
 
 const mapboxApiURI = "https://api.mapbox.com/geocoding/v5/mapbox.";
 const cityDataType = "places/";
-// const provinceDataType = "region/";
 const jsonResultsType = ".json";
 const key = "?access_token=pk.eyJ1IjoiZ3JvdXAxMmJjaXQiLCJhIjoiY2todHkweTQyMGZhMTJ5cDVscGlvZWQ3cCJ9.Vr97MSaaSle3rnBNIwW7MQ";
 
 const searchInputId = "searchInput";
 let validList = [];
-let isSearchValid = false;
+let isSelectionValid = false;
 let onChangedCallBack = function () {};
 
 function configAutoComplete(onChangedCallBack) {
@@ -31,9 +30,13 @@ function configAutoComplete(onChangedCallBack) {
     $searchInput.on("autocomplete.select", onSelected);
 }
 
+function setValidity(location){
+    isSelectionValid = validList.includes(location) && location !== "";
+}
+
 function onSelected(event, item) {
     // item here is the selected value
-    isSearchValid = validList.includes(item) && item !== "";
+    setValidity(item);
 }
 
 function onChanged(event) {
@@ -41,8 +44,7 @@ function onChanged(event) {
     let input = event.target;
     
     // set canSubmit so submit button can be set to enabled
-    isSearchValid = validList.includes(input.value) && item !== "";
-    
+    setValidity(input.value);
     onChangedCallBack()
 }
 
@@ -66,8 +68,9 @@ function extractNames(data, callback) {
 }
 
 export {
-    isSearchValid,
+    isSelectionValid,
+    setValidity,
     validList,
     configAutoComplete,
-    searchInputId
+    searchInputId,
 }

@@ -31,6 +31,8 @@ Stylizing techs:
 Database related techs:
 * Cloud FireStore
 
+***
+
 ## Project Hiearchy
 Content of the project folder:
 

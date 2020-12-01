@@ -67,7 +67,7 @@ function setNavItemsVisibility(isUserLoggedIn) {
 function changeActiveLink() {
     let isIndex = window.location.pathname === "/";
     if (isIndex) {
-        let navLink = getElemById('navLocChange').firstChild;
+        let navLink = getElemById('navLocChange').firstElementChild;
         navLink.classList.add('active');
     } else {
         let href = window.location.pathname.replace("/", "");

@@ -97,6 +97,7 @@ function setCollectionRef() {
         showAllBtn.innerHTML = "Show all";
         currentBsRef = cityFilteredRef;
     }
+    return currentBsRef;
 }
 
 // Get businesses
@@ -117,7 +118,7 @@ async function loadBusinesses() {
 function addFilter() {
     const input = form.searchBar.value.toLowerCase();
     if (input !== "") {
-        setCollectionRef();
-        currentBsRef = currentBsRef.where("category", "==", input);
+        let ref = setCollectionRef();
+        currentBsRef = ref.where("category", "==", input);
     }
 }

@@ -5,17 +5,8 @@ import {
     getElemById
 } from './utils.js';
 
-async function onLoadingDone(contentToShowId) {
-    const spinner = getElemById('pageSpinner');
-    spinner.hidden = true;
-
-    const form = getElemById(contentToShowId);
-    form.hidden = false;
-}
-
 const appVersion = "1.0";
 document.appVersion = appVersion;
-document.onLoadingDone = onLoadingDone;
 
 $(document).ready(start);
 firebase.auth().onAuthStateChanged(function (user) {
@@ -60,8 +51,10 @@ function setNavItemsVisibility(isUserLoggedIn) {
     let navProfile = getElemById('navProfile');
     let navLogin = getElemById('navLogin');
     let navLogout = getElemById('navLogout');
+    let navLocChange = getElemById('navLocChange');
 
     navProfile.hidden = !isUserLoggedIn;
     navLogout.hidden = !isUserLoggedIn;
     navLogin.hidden = isUserLoggedIn;
+    navLocChange.hidden = isUserLoggedIn;
 }

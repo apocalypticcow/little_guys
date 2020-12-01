@@ -63,7 +63,6 @@ function renderBusiness(doc) {
         e.preventDefault();
         let docId = e.target.parentElement.getAttribute("data-id");
         localStorage.setItem("docId", docId);
-        console.log(docId);
         redirect();
     })
 

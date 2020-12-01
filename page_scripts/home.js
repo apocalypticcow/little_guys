@@ -43,7 +43,10 @@ function setCollRefFilter(city) {
 }
 
 let showAllBtn = document.getElementById('showAllBtn').firstElementChild;
-showAllBtn.addEventListener('click', toggleShowAll);
+showAllBtn.addEventListener('click', ()=>{
+    toggleShowAll();
+    tryTo(loadBusinesses);
+});
 
 //create and render business list
 function renderBusiness(doc) {
@@ -90,20 +93,16 @@ function renderBusiness(doc) {
 }
 
 function toggleShowAll() {
-    toggleCityFilter();
-    loadBusinesses();
+    showingAll = !showingAll;
+    setCollectionRef();
 }
 
 // Search button functionality
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    loadBusinesses();
+    tryTo(loadBusinesses);
 })
 
-function toggleCityFilter() {
-    showingAll = !showingAll;
-    setCollectionRef();
-}
 
 function setCollectionRef() {
     if (showingAll) {

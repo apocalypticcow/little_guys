@@ -1,6 +1,9 @@
 import {
     db
 } from './firebase_api_littleguys.js';
+import {
+    tryTo
+} from '../core/utils.js';
 
 const businessList = document.querySelector("#business-list");
 const form = document.querySelector("#search-container");
@@ -14,19 +17,30 @@ firebase.auth().onAuthStateChanged(async function (user) {
     if (user) {
         let ref = db.collection('users').doc(user.uid);
         let snap = await ref.get();
-        let normalizedCity = snap.data().location.toLowerCase();
-        currentBsRef = currentBsRef.where("city", "==", normalizedCity);
-        cityFilteredRef = currentBsRef;
+        let dbUser = snap.data();
+        let city = dbUser.location;
+        setCollRefFilter(city);
     } else {
         let city = localStorage.getItem("user-location");
-        if (city && city !== "") {
-            currentBsRef = currentBsRef.where("city", "==", city.toLowerCase());
-            cityFilteredRef = currentBsRef;
+        if (city === null) {
+            setCollRefFilter(city);
+        }else{
+            toggleShowAll();
         }
-
     }
-    loadBusinesses();
+
+    tryTo(loadBusinesses);
 });
+
+function setCollRefFilter(city) {
+    if (city && city !== "") {
+        let city = city.toLowerCase();
+        currentBsRef = currentBsRef.where("city", "==", city);
+        cityFilteredRef = currentBsRef;
+    }else{
+        toggleShowAll();
+    }
+}
 
 let showAllBtn = document.getElementById('showAllBtn').firstElementChild;
 showAllBtn.addEventListener('click', toggleShowAll);

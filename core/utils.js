@@ -1,4 +1,3 @@
-
 function getElemById(id) {
     return document.getElementById(id);
 }
@@ -6,6 +5,14 @@ function getElemById(id) {
 function attachEvent(eventName, elementid, func) {
     let element = document.getElementById(elementid);
     element.addEventListener(eventName, func);
+}
+
+function tryTo(callBack, ...params) {
+    try {
+        callBack(...params);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 function onSubmitted(event) {
@@ -34,11 +41,12 @@ function setAttribute(el, attrs) {
     }
 }
 
-export{
+export {
+    tryTo,
     getElemById,
     attachEvent,
     onSubmitted,
     createElem,
     createJQueryElem,
-    setAttribute
+    setAttribute,
 }

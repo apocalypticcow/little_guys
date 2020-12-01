@@ -2,10 +2,11 @@ import {
     db
 } from '../page_scripts/firebase_api_littleguys.js';
 import {
-    getElemById
+    getElemById,
+    tryTo
 } from './utils.js';
 
-const appVersion = "1.1";
+const appVersion = "1.2";
 document.appVersion = appVersion;
 document.isUserSignedIn = false;
 
@@ -14,7 +15,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     let isUserSignedIn;
     if (user) {
         console.log("User is signed in");
-        uploadUserLocation(user.uid);
+        tryTo(uploadUserLocation, user.uid)
         isUserSignedIn = true;
 
     } else {
@@ -27,7 +28,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 function start() {
     $("#topBar-container").load("top_bar.html", () => {
         console.log("Navbar loaded");
-        setNavItemsVisibility(document.isUserSignedIn);
+        tryTo(setNavItemsVisibility, document.isUserSignedIn);
     });
 }
 

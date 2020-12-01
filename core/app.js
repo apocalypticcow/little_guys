@@ -18,26 +18,23 @@ document.appVersion = appVersion;
 document.onLoadingDone = onLoadingDone;
 
 $(document).ready(start);
+firebase.auth().onAuthStateChanged(function (user) {
+    let isUserSignedIn;
+    if (user) {
+        console.log("User is signed in");
+        uploadUserLocation(user.uid);
+        isUserSignedIn = true;
+
+    } else {
+        console.log("No user signed in yet.");
+        isUserSignedIn = false;
+    }
+    setNavItemsVisibility(isUserSignedIn);
+    document.isUserSignedIn = isUserSignedIn;
+});
 
 function start() {
-
-    $("#topBar-container").load("top_bar.html", ()=> console.log("Navbar loaded"));
-
-    firebase.auth()
-        .onAuthStateChanged(function (user) {
-            let isUserSignedIn;
-            if (user) {
-                console.log("User is signed in");
-                uploadUserLocation(user.uid);
-                isUserSignedIn = true;
-            } else {
-                console.log("No user signed in yet.");
-                isUserSignedIn = false;
-            }
-
-            setNavItemsVisibility(isUserSignedIn);
-            document.isUserSignedIn = isUserSignedIn;
-        });
+    $("#topBar-container").load("top_bar.html", () => console.log("Navbar loaded"));
 }
 
 function uploadUserLocation(uid) {

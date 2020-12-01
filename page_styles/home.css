@@ -82,3 +82,11 @@ li span:nth-child(5){
     text-decoration: none;
     color: white;
 }
+
+#showAllBtn{
+    text-align: right;
+}
+
+#showAllBtn > button{
+    width: auto;
+}

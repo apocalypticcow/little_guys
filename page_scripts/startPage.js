@@ -19,6 +19,7 @@ function start() {
     searchInput.focus();
     attachEvent("submit", formId, onSubmitted);
     configAutoComplete(onAutoCompleteChange);
+    document.hideLoader();
 }
 
 function onAutoCompleteChange(){

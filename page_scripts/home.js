@@ -4,7 +4,10 @@ import {
 
 const businessList = document.querySelector("#business-list");
 const form = document.querySelector("#search-container");
-let businessesRef = db.collection("businesses");
+const allBusinessRef = db.collection("businesses");
+let currentBsRef = allBusinessRef;
+let cityFilteredRef;
+let showingAll = false;
 
 firebase.auth().onAuthStateChanged(async function (user) {
 
@@ -12,12 +15,18 @@ firebase.auth().onAuthStateChanged(async function (user) {
         let ref = db.collection('users').doc(user.uid);
         let snap = await ref.get();
         let normalizedCity = snap.data().location.toLowerCase();
-        businessesRef = businessesRef.where("city", "==", normalizedCity);
-        loadBusinesses();
+        currentBsRef = currentBsRef.where("city", "==", normalizedCity);
+        cityFilteredRef = currentBsRef;
+    }else{
+        let city = localStorage.getItem("user-location");
+        currentBsRef = currentBsRef.where("city", "==", city.toLowerCase());
+        cityFilteredRef = currentBsRef;
     }
+    loadBusinesses();
 });
 
-let input = "pears";
+let showAllBtn = document.getElementById('showAllBtn').firstElementChild;
+showAllBtn.addEventListener('click', toggleShowAll);
 
 //create and render business list
 function renderBusiness(doc) {
@@ -64,25 +73,51 @@ function renderBusiness(doc) {
     }
 }
 
+function toggleShowAll() {
+    toggleCityFilter();
+    loadBusinesses();
+}
+
 // Search button functionality
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    input = form.searchBar.value;
-    loadBusinesses(input);
+    loadBusinesses();
 })
 
+function toggleCityFilter() {
+    showingAll = !showingAll;
+    setCollectionRef();
+}
+
+function setCollectionRef() {
+    if (showingAll) {
+        showAllBtn.innerHTML = "In City";
+        currentBsRef = allBusinessRef;
+    } else {
+        showAllBtn.innerHTML = "Show all";
+        currentBsRef = cityFilteredRef;
+    }
+}
+
 // Get businesses
-function loadBusinesses(filter) {
+async function loadBusinesses() {
     $(businessList).empty();
 
-    if (filter) {
-        businessesRef = businessesRef.where("category", "==", filter);
-    }
+    addFilter();
+    let collection = [];
+    let snap = await currentBsRef.get();
+    snap.docs.forEach(doc => {
+        collection.push(doc.data());
+        renderBusiness(doc);
+    })
 
-    businessesRef.get()
-        .then((snapshot) => {
-            snapshot.docs.forEach(doc => {
-                renderBusiness(doc);
-            })
-        });
+    document.hideLoader();
+}
+
+function addFilter() {
+    const input = form.searchBar.value.toLowerCase();
+    if (input !== "") {
+        setCollectionRef();
+        currentBsRef = currentBsRef.where("category", "==", input);
+    }
 }

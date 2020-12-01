@@ -9,15 +9,3 @@
 #submitBtn {
     text-align: center;
 }
-
-button {
-    width: 100%;
-}
-
-.fa-circle-o-notch {
-    position: absolute;
-    top: 50%;
-    left: 48.5%;
-    transform: translate(-50%, -50%)
-}
-

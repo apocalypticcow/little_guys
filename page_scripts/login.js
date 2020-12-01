@@ -66,6 +66,8 @@ var uiConfig = {
             if (loader) {
                 loader.style.display = 'none';
             }
+            
+            document.hideLoader();
         }
     },
     // Will use popup for IDP Providers sign-in flow instead of the default, redirect.

@@ -23,6 +23,10 @@
 
 <body>
 
+    <!-- Move jquery lib here for loader -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="core/pageLoader.js"></script>
+
     <!-------------------------------------->
     <!-- The following is HTML for layout -->
     <!-------------------------------------->
@@ -30,8 +34,7 @@
     <div id="topBar-container"></div>
 
     <div id="content">
-        <i id="pageSpinner" class="fa fa-circle-o-notch fa-spin fa-3x"></i>
-        <form hidden id="profileForm" class="container-fluid needs-validation" novalidate>
+        <form id="profileForm" class="container-fluid needs-validation" novalidate>
             <div class="form-group">
                 <label for="emailField">Email address</label>
                 <input id="emailField" disabled type="email" class="form-control" aria-describedby="emailHelp">
@@ -73,13 +76,10 @@
             Profile has been updated!
         </div>
     </div>
-
     <!-------------------------------------------->
     <!-- The following is JS for functionality  -->
     <!-------------------------------------------->
     <!-- Bootstrap libraries from CDN -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
     </script>

@@ -42,7 +42,7 @@ async function authStateChanged(user) {
         await fillFormWithData(user);
     }
 
-    document.onLoadingDone(formId);
+    document.hideLoader();
 }
 
 function configInputs() {

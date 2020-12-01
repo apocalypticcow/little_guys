@@ -48,6 +48,7 @@ function uploadUserLocation(uid) {
 }
 
 function setNavItemsVisibility(isUserLoggedIn) {
+
     let navProfile = getElemById('navProfile');
     let navLogin = getElemById('navLogin');
     let navLogout = getElemById('navLogout');
@@ -57,4 +58,13 @@ function setNavItemsVisibility(isUserLoggedIn) {
     navLogout.hidden = !isUserLoggedIn;
     navLogin.hidden = isUserLoggedIn;
     navLocChange.hidden = isUserLoggedIn;
+    changeActiveLink()
+}
+
+function changeActiveLink() {
+    let href = window.location.pathname.replace("/","");
+    let selector = "a[href='" + href + "'].nav-link";
+    let activeElem = document.querySelector(selector);
+    console.log(activeElem);
+    activeElem.classList.add('active');
 }

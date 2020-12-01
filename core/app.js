@@ -5,7 +5,7 @@ import {
     getElemById
 } from './utils.js';
 
-const appVersion = "1.0";
+const appVersion = "1.1";
 document.appVersion = appVersion;
 
 $(document).ready(start);
@@ -64,9 +64,14 @@ function setNavItemsVisibility(isUserLoggedIn) {
 }
 
 function changeActiveLink() {
-    let href = window.location.pathname.replace("/", "");
-    let selector = "a[href='" + href + "'].nav-link";
-    let activeElem = document.querySelector(selector);
-    console.log(activeElem);
-    activeElem.classList.add('active');
+    let isIndex = window.location.pathname === "/";
+    if (isIndex) {
+        let navLink = getElemById('navLocChange').firstChild;
+        navLink.classList.add('active');
+    } else {
+        let href = window.location.pathname.replace("/", "");
+        let selector = "a[href='" + href + "'].nav-link";
+        let activeElem = document.querySelector(selector);
+        activeElem.classList.add('active');
+    }
 }

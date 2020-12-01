@@ -20,12 +20,14 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log("No user signed in yet.");
         isUserSignedIn = false;
     }
-    setNavItemsVisibility(isUserSignedIn);
     document.isUserSignedIn = isUserSignedIn;
 });
 
 function start() {
-    $("#topBar-container").load("top_bar.html", () => console.log("Navbar loaded"));
+    $("#topBar-container").load("top_bar.html", () => {
+        console.log("Navbar loaded");
+        setNavItemsVisibility(isUserSignedIn);
+    });
 }
 
 function uploadUserLocation(uid) {
@@ -62,7 +64,7 @@ function setNavItemsVisibility(isUserLoggedIn) {
 }
 
 function changeActiveLink() {
-    let href = window.location.pathname.replace("/","");
+    let href = window.location.pathname.replace("/", "");
     let selector = "a[href='" + href + "'].nav-link";
     let activeElem = document.querySelector(selector);
     console.log(activeElem);

@@ -17,10 +17,13 @@ firebase.auth().onAuthStateChanged(async function (user) {
         let normalizedCity = snap.data().location.toLowerCase();
         currentBsRef = currentBsRef.where("city", "==", normalizedCity);
         cityFilteredRef = currentBsRef;
-    }else{
+    } else {
         let city = localStorage.getItem("user-location");
-        currentBsRef = currentBsRef.where("city", "==", city.toLowerCase());
-        cityFilteredRef = currentBsRef;
+        if (city && city !== "") {
+            currentBsRef = currentBsRef.where("city", "==", city.toLowerCase());
+            cityFilteredRef = currentBsRef;
+        }
+
     }
     loadBusinesses();
 });

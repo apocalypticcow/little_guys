@@ -7,6 +7,7 @@ import {
 
 const appVersion = "1.1";
 document.appVersion = appVersion;
+document.isUserSignedIn = false;
 
 $(document).ready(start);
 firebase.auth().onAuthStateChanged(function (user) {
@@ -26,7 +27,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 function start() {
     $("#topBar-container").load("top_bar.html", () => {
         console.log("Navbar loaded");
-        setNavItemsVisibility(isUserSignedIn);
+        setNavItemsVisibility(document.isUserSignedIn);
     });
 }
 

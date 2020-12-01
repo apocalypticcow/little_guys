@@ -13,37 +13,33 @@ let cityFilteredRef = allBusinessRef;
 let showingAll = false;
 
 firebase.auth().onAuthStateChanged(async function (user) {
-
+    let city;
     if (user) {
         let ref = db.collection('users').doc(user.uid);
         let snap = await ref.get();
         let dbUser = snap.data();
-        let city = dbUser.location;
-        setCollRefFilter(city);
+        city = dbUser.location;
     } else {
-        let city = localStorage.getItem("user-location");
-        if (city === null) {
-            setCollRefFilter(city);
-        }else{
-            toggleShowAll();
-        }
+        city = localStorage.getItem("user-location");
     }
 
+    setCollRefFilter(city);
     tryTo(loadBusinesses);
 });
 
 function setCollRefFilter(city) {
-    if (city && city !== "") {
+    let isValid = city && city instanceof String && city !== "";
+    if (isValid) {
         let city = city.toLowerCase();
         currentBsRef = currentBsRef.where("city", "==", city);
         cityFilteredRef = currentBsRef;
-    }else{
+    } else {
         toggleShowAll();
     }
 }
 
 let showAllBtn = document.getElementById('showAllBtn').firstElementChild;
-showAllBtn.addEventListener('click', ()=>{
+showAllBtn.addEventListener('click', () => {
     toggleShowAll();
     tryTo(loadBusinesses);
 });

@@ -1,12 +1,26 @@
-import { db } from './firebase_api_littleguys.js';
+import {
+    db
+} from './firebase_api_littleguys.js';
 
 const businessList = document.querySelector("#business-list");
 const form = document.querySelector("#search-container");
+let businessesRef = db.collection("businesses");
+
+firebase.auth().onAuthStateChanged(async function (user) {
+
+    if (user) {
+        let ref = db.collection('users').doc(user.uid);
+        let snap = await ref.get();
+        let normalizedCity = snap.data().location.toLowerCase();
+        businessesRef = businessesRef.where("city", "==", normalizedCity);
+        loadBusinesses();
+    }
+});
 
 let input = "pears";
 
 //create and render business list
-function renderBusiness(doc){
+function renderBusiness(doc) {
     let li = document.createElement("li");
     let name = document.createElement("span");
     let phone = document.createElement("span");
@@ -24,7 +38,7 @@ function renderBusiness(doc){
     province.textContent = doc.data().province;
     a.href = "#";
     a.textContent = "Details";
-    
+
 
     li.appendChild(name);
     li.appendChild(phone);
@@ -36,39 +50,38 @@ function renderBusiness(doc){
     businessList.appendChild(li);
 
     // upon anchor tag click, sets the correct id to local storage.
-    a.addEventListener("click", (e) =>{
-        var docId = e.target.parentElement.getAttribute("data-id");
-        localStorage.setItem("docId", docId);  
-        console.log(docId);
-        redirect();      
+    a.addEventListener("click", (e) => {
+        e.preventDefault();
+        let docId = e.target.parentElement.getAttribute("data-id");
+        localStorage.setItem("docId", docId);
+        redirect();
     })
 
     // redirects to details.html page. 
-    function redirect(){
+    function redirect() {
         window.location.href = "./details.html";
     }
 }
 
 // Search button functionality
-form.addEventListener("submit", (e) =>{
+form.addEventListener("submit", (e) => {
     e.preventDefault();
     input = form.searchBar.value;
-    orderList(input);
+    loadBusinesses(input);
 })
 
-// Resets list items, displays only specified items.
-function orderList(orderBy){
-    $("#business-list").empty();
-    db.collection("businesses").where("category", "==", orderBy).get().then((snapshot) =>{
-        snapshot.docs.forEach(doc => {
-            renderBusiness(doc);
-        })
-    })
+// Get businesses
+function loadBusinesses(filter) {
+    $(businessList).empty();
+
+    if (filter) {
+        businessesRef = businessesRef.where("category", "==", filter);
+    }
+
+    businessesRef.get()
+        .then((snapshot) => {
+            snapshot.docs.forEach(doc => {
+                renderBusiness(doc);
+            })
+        });
 }
-
-// Display all businesses
-db.collection("businesses").get().then((snapshot) =>{
-    snapshot.docs.forEach(doc => {
-        renderBusiness(doc);
-    })
-})

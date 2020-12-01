@@ -1,6 +1,6 @@
 body {
     background-color: #F2F2F2;
-    padding-top: 10vh;
+    padding-top: 20vh;
 }
 
 #searchBar>* {
@@ -11,6 +11,9 @@ body {
     color: #F2B705;
 }
 
+form>button{
+    width: 100%;
+}
 /* Palette #1 */
 
 /* #034AA6 */

@@ -2,11 +2,10 @@ import {
     db
 } from '../page_scripts/firebase_api_littleguys.js';
 import {
-    attachEvent,
     getElemById
 } from './utils.js';
 
-const onLoadingDone = function (contentToShowId) {
+async function onLoadingDone(contentToShowId) {
     const spinner = getElemById('pageSpinner');
     spinner.hidden = true;
 
@@ -22,8 +21,7 @@ $(document).ready(start);
 
 function start() {
 
-    document.userLocKey = "user-location";
-    $("#topBar-container").load("top_bar.html", attachEventWrapper);
+    $("#topBar-container").load("top_bar.html", ()=> console.log("Navbar loaded"));
 
     firebase.auth()
         .onAuthStateChanged(function (user) {
@@ -36,7 +34,9 @@ function start() {
                 console.log("No user signed in yet.");
                 isUserSignedIn = false;
             }
+
             setNavItemsVisibility(isUserSignedIn);
+            document.isUserSignedIn = isUserSignedIn;
         });
 }
 
@@ -45,7 +45,7 @@ function uploadUserLocation(uid) {
 
     let updateUserData = function (doc) {
         let userDoc = doc.data();
-        let storageLoc = localStorage.getItem(document.userLocKey);
+        let storageLoc = localStorage.getItem("user-location");
 
         if (doc.exists && !userDoc.location && storageLoc) {
             console.log("Updating user location since it's the first login");
@@ -56,13 +56,7 @@ function uploadUserLocation(uid) {
         }
     }
 
-    userRef.get().then(updateUserData)
-}
-
-let attachEventWrapper = (res) => attachEvent("submit", "searchBar", onSubmitted);
-
-function onSubmitted(event) {
-    console.log("submitted");
+    userRef.get().then(updateUserData);
 }
 
 function setNavItemsVisibility(isUserLoggedIn) {
@@ -70,7 +64,7 @@ function setNavItemsVisibility(isUserLoggedIn) {
     let navLogin = getElemById('navLogin');
     let navLogout = getElemById('navLogout');
 
-    navProfile.hidden = !isUserLoggedIn ;
-    navLogout.hidden = !isUserLoggedIn ;
-    navLogin.hidden = isUserLoggedIn ;
+    navProfile.hidden = !isUserLoggedIn;
+    navLogout.hidden = !isUserLoggedIn;
+    navLogin.hidden = isUserLoggedIn;
 }

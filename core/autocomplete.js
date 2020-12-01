@@ -9,6 +9,7 @@ const jsonResultsType = ".json";
 const key = "?access_token=pk.eyJ1IjoiZ3JvdXAxMmJjaXQiLCJhIjoiY2todHkweTQyMGZhMTJ5cDVscGlvZWQ3cCJ9.Vr97MSaaSle3rnBNIwW7MQ";
 
 const searchInputId = "searchInput";
+const searchInput = getElemById(searchInputId);
 let validList = [];
 let isSelectionValid = false;
 let onChangedCallBack = function () {};
@@ -16,7 +17,7 @@ let onChangedCallBack = function () {};
 function configAutoComplete(onChangedCallBack) {
     onChangedCallBack = onChangedCallBack;
 
-    const $searchInput = $(getElemById(searchInputId));
+    const $searchInput = $(searchInput);
     $searchInput.autoComplete({
         minLength: 3,
         resolver: 'custom',
@@ -28,6 +29,12 @@ function configAutoComplete(onChangedCallBack) {
 
     attachEvent("change", searchInputId, onChanged);
     $searchInput.on("autocomplete.select", onSelected);
+}
+
+function getCity() {
+    let location = searchInput.value;
+    let city = location.split(',')[0];
+    return city;
 }
 
 function setValidity(location){
@@ -73,4 +80,5 @@ export {
     validList,
     configAutoComplete,
     searchInputId,
+    getCity,
 }

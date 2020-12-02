@@ -78,9 +78,10 @@ async function onSubmitted(event) {
 
     setFormSubmitionAccess(false);
 
-    let anyEmptyInputs = inputsToToggle.find(elem => elem.value !== "") == undefined;
-    if (!anyEmptyInputs && !isSelectionValid) {
+    // let anyEmptyInputs = inputsToToggle.find(elem => elem.value !== "") == undefined;
+    if (!isSelectionValid) {
         let searchField = getElemById(searchInputId);
+        
         searchField.classList.add('is-invalid');
         setFormSubmitionAccess(true);
         return;

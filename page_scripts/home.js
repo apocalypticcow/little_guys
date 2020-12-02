@@ -123,7 +123,7 @@ async function loadBusinesses() {
     snap.docs.forEach(doc => {
         collection.push(doc.data());
         renderBusiness(doc);
-    })
+    });
 
     document.hideLoader();
 }

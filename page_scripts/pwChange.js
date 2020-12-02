@@ -1,4 +1,3 @@
-import {} from '../page_scripts/firebase_api_littleguys.js';
 import {
     getElemById,
     attachEvent

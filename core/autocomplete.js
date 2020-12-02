@@ -6,7 +6,8 @@ import {
 const mapboxApiURI = "https://api.mapbox.com/geocoding/v5/mapbox.";
 const cityDataType = "places/";
 const jsonResultsType = ".json";
-const key = "?access_token=pk.eyJ1IjoiZ3JvdXAxMmJjaXQiLCJhIjoiY2todHkweTQyMGZhMTJ5cDVscGlvZWQ3cCJ9.Vr97MSaaSle3rnBNIwW7MQ";
+const typeOfResults = "?types=place&"
+const key = "&access_token=pk.eyJ1IjoiZ3JvdXAxMmJjaXQiLCJhIjoiY2todHkweTQyMGZhMTJ5cDVscGlvZWQ3cCJ9.Vr97MSaaSle3rnBNIwW7MQ";
 
 const searchInputId = "searchInput";
 const searchInput = getElemById(searchInputId);
@@ -32,12 +33,12 @@ function configAutoComplete(onChangedCallBack) {
 }
 
 function getCity() {
-    let location = searchInput.value;
-    let city = location.split(',')[0];
-    return city;
+    return searchInput.value;
 }
 
-function setValidity(location){
+function setValidity(location) {
+    let errorMsg = location === "" ? "Location must be provided!" : "Location is Invalid!";
+    getElemById('loc-feedback').innerText = errorMsg;
     isSelectionValid = validList.includes(location) && location !== "";
 }
 
@@ -49,14 +50,14 @@ function onSelected(event, item) {
 function onChanged(event) {
     // target is the element triggered this event
     let input = event.target;
-    
+
     // set canSubmit so submit button can be set to enabled
     setValidity(input.value);
     onChangedCallBack()
 }
 
 function getPossibleCities(qry, callback) {
-    const uri = mapboxApiURI + cityDataType + qry + jsonResultsType + key;
+    const uri = mapboxApiURI + cityDataType + qry + jsonResultsType + typeOfResults + key;
 
     fetch(encodeURI(uri))
         .then((response) => {
@@ -69,9 +70,17 @@ function getPossibleCities(qry, callback) {
 }
 
 function extractNames(data, callback) {
-    let possibleNames = data.features.map(feature => feature.place_name);
-    validList = possibleNames;
-    callback(possibleNames);
+
+    let placesInCa = data.features
+        .filter(feature => {
+            let country = feature.context.find(ctx => ctx.id.startsWith("country"));
+            return country.text == "Canada" && feature.place_type.includes("place");
+        });
+
+    let possiblePlaces = placesInCa.map(feature => feature.text);
+
+    validList = possiblePlaces;
+    callback(possiblePlaces);
 }
 
 export {

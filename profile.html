@@ -46,20 +46,24 @@
                 <label for="searchInput">Enter your location</label>
                 <input id="searchInput" name="searchInput" class="form-control basicAutoComplete" type="search"
                     placeholder="Search" autocomplete="off" required>
-                <div id="loc-feedback" class="invalid-feedback">Location must be provided!</div>
+                <div id="loc-feedback" class="invalid-feedback"></div>
             </div>
+
+            <div id="submitBtn" class="form-group">
+                <button type="submit" class="form-control btn btn-primary">Save</button>
+            </div>
+
+            <hr>
 
             <div class="form-group">
                 <button id="businessAddBtn" onclick="window.location.href='/business-add.html'"
                     type="button" class="form-control btn btn-primary">Add a business</button>
             </div>
 
-            <div id="submitBtn">
-                <button type="submit" class="form-control btn btn-primary">Save</button>
-            </div>
             <div id="toPwChange">
                 <a href="/pwChange.html">Change password</a>
             </div>
+
         </form>
     </div>
 

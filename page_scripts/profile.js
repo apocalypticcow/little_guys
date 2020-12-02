@@ -19,20 +19,16 @@ const inputsToToggle = [];
 $(document).ready(start);
 
 function start() {
-    attachEvent("submit", formId, onSubmitted);
+    attachEvent("submit", formId, onSubmit);
 
     configAutoComplete();
     configInputs();
-    let toast = getElemById('successToast');
-    $(toast).toast({
-        // configuring toast to stay for 3 sec
-        delay: 3000
-    });
-    $(toast).on('hidden.bs.toast', () => toast.style.zIndex = -1);
+    configToast();
 }
 
 let currentUser;
 firebase.auth().onAuthStateChanged(authStateChanged);
+
 async function authStateChanged(user) {
     if (user) {
         currentUser = user;
@@ -46,7 +42,7 @@ async function authStateChanged(user) {
 }
 
 function configInputs() {
-    let inputs = document.getElementsByTagName('input')
+    let inputs = document.getElementsByTagName('input');
 
     for (const element of inputs) {
         if (element.type !== 'email') {
@@ -54,6 +50,15 @@ function configInputs() {
             inputsToToggle.push(element);
         }
     }
+}
+
+function configToast() {
+    let toast = getElemById('successToast');
+    $(toast).toast({
+        // configuring toast to stay for 3 sec
+        delay: 3000
+    });
+    $(toast).on('hidden.bs.toast', () => toast.style.zIndex = -1);
 }
 
 function clearFormInvalidMarks(event) {
@@ -65,20 +70,19 @@ function clearFormInvalidMarks(event) {
 }
 
 function setFormSubmitionAccess(turnOn) {
-    let spinner = getElemById('pageSpinner');
-    spinner.hidden = turnOn === true;
+    let $spinner = $(getElemById('pageSpinner'));
+    turnOn ? $spinner.fadeIn() : $spinner.fadOut();
     inputsToToggle.forEach(elem => {
         elem.disabled = turnOn === false;
     });
 }
 
-async function onSubmitted(event) {
+async function onSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
 
     setFormSubmitionAccess(false);
 
-    // let anyEmptyInputs = inputsToToggle.find(elem => elem.value !== "") == undefined;
     if (!isSelectionValid) {
         let searchField = getElemById(searchInputId);
         

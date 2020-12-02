@@ -6,7 +6,7 @@ import {
     tryTo
 } from './utils.js';
 
-const appVersion = "1.3";
+const appVersion = "1.4";
 document.appVersion = appVersion;
 document.isUserSignedIn = false;
 

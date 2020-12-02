@@ -11,9 +11,17 @@ const allBusinessRef = db.collection("businesses");
 let currentBsRef = allBusinessRef;
 let cityFilteredRef = allBusinessRef;
 let showingAll = false;
-
+const inputsToToggle = [];
 document.currentBsRef = currentBsRef;
 document.cityFilteredRef = cityFilteredRef;
+
+let showAllBtn = document.getElementById('showAllBtn').firstElementChild;
+showAllBtn.addEventListener('click', () => {
+    toggleShowAll();
+    tryTo(loadBusinesses);
+});
+
+configInputs();
 
 firebase.auth().onAuthStateChanged(async function (user) {
     let city;
@@ -27,7 +35,8 @@ firebase.auth().onAuthStateChanged(async function (user) {
     }
 
     setCollRefFilter(city);
-    tryTo(loadBusinesses);
+    await tryTo(loadBusinesses);
+    document.hideLoader();
 });
 
 function setCollRefFilter(city) {
@@ -39,12 +48,6 @@ function setCollRefFilter(city) {
         toggleShowAll();
     }
 }
-
-let showAllBtn = document.getElementById('showAllBtn').firstElementChild;
-showAllBtn.addEventListener('click', () => {
-    toggleShowAll();
-    tryTo(loadBusinesses);
-});
 
 //create and render business list
 function renderBusiness(doc) {
@@ -90,6 +93,25 @@ function renderBusiness(doc) {
     }
 }
 
+function configInputs() {
+    let inputs = document.getElementsByTagName('input');
+
+    for (const element of inputs) {
+        inputsToToggle.push(element);
+    }
+}
+
+function setFormSubmitionAccess(turnOn) {
+    let $spinner = $(document.getElementById('pageSpinner'));
+    turnOn ? $spinner.fadeOut("fast") : $spinner.fadeIn("fast");
+    inputsToToggle.forEach(elem => {
+        $(elem).disabled = turnOn === false;
+    });
+
+    let $list = $(document.getElementById('business-list'));
+    !turnOn ? $list.fadeOut("fast") : $list.fadeIn("fast");
+}
+
 function toggleShowAll() {
     showingAll = !showingAll;
     setCollectionRef();
@@ -115,17 +137,14 @@ function setCollectionRef() {
 
 // Get businesses
 async function loadBusinesses() {
+    setFormSubmitionAccess(false);
     $(businessList).empty();
-
     addFilter();
-    let collection = [];
     let snap = await currentBsRef.get();
     snap.docs.forEach(doc => {
-        collection.push(doc.data());
         renderBusiness(doc);
     });
-
-    document.hideLoader();
+    setFormSubmitionAccess(true);
 }
 
 function addFilter() {
@@ -133,5 +152,7 @@ function addFilter() {
     if (input !== "") {
         let ref = setCollectionRef();
         currentBsRef = ref.where("category", "==", input);
+    } else {
+        currentBsRef = showAllBtn ? allBusinessRef : cityFilteredRef;
     }
 }

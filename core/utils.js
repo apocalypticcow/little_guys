@@ -7,9 +7,9 @@ function attachEvent(eventName, elementid, func) {
     element.addEventListener(eventName, func);
 }
 
-function tryTo(callBack, ...params) {
+async function tryTo(callBack, ...params) {
     try {
-        callBack(...params);
+        await callBack(...params);
     } catch (error) {
         console.log(error);
     }

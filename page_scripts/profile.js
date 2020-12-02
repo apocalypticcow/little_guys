@@ -69,9 +69,9 @@ function clearFormInvalidMarks(event) {
     }
 }
 
-function setFormSubmitionAccess(turnOn) {
+function setInputsAccess(turnOn) {
     let $spinner = $(getElemById('pageSpinner'));
-    turnOn ? $spinner.fadeIn() : $spinner.fadeOut();
+    turnOn ? $spinner.fadeOut("fast") : $spinner.fadeIn("fast");
     inputsToToggle.forEach(elem => {
         elem.disabled = turnOn === false;
     });
@@ -81,19 +81,19 @@ async function onSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    setFormSubmitionAccess(false);
+    setInputsAccess(false);
 
     if (!isSelectionValid) {
         let searchField = getElemById(searchInputId);
-        
         searchField.classList.add('is-invalid');
-        setFormSubmitionAccess(true);
+        setInputsAccess(true);
         return;
     }
 
     await updateUser();
 
     afterProfileSaved();
+    setInputsAccess(true);
 }
 
 async function updateUser() {
@@ -109,8 +109,6 @@ function afterProfileSaved() {
     let toast = getElemById('successToast');
     toast.style.zIndex = 0;
     $(toast).toast('show');
-
-    setFormSubmitionAccess(true);
 }
 
 async function fillFormWithData(user) {

@@ -1,3 +1,8 @@
+# firebase hosting files
+.fire*
+fire*
+404.html
+
 # Compiled class file
 *.class
 

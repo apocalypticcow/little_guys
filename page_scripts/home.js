@@ -12,6 +12,9 @@ let currentBsRef = allBusinessRef;
 let cityFilteredRef = allBusinessRef;
 let showingAll = false;
 
+document.currentBsRef = currentBsRef;
+document.cityFilteredRef = cityFilteredRef;
+
 firebase.auth().onAuthStateChanged(async function (user) {
     let city;
     if (user) {
@@ -28,9 +31,8 @@ firebase.auth().onAuthStateChanged(async function (user) {
 });
 
 function setCollRefFilter(city) {
-    let isValid = city && city instanceof String && city !== "";
-    if (isValid) {
-        let city = city.toLowerCase();
+    if (city && city !== "") {
+        city = city.toLowerCase();
         currentBsRef = currentBsRef.where("city", "==", city);
         cityFilteredRef = currentBsRef;
     } else {

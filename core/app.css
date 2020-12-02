@@ -7,20 +7,21 @@ body {
     margin-left: 10px;
 }
 
-#pageSpinner{
+#pageSpinner {
     position: absolute;
     top: 50%;
-    left: 48.5%;
+    left: 46%;
     transform: translate(-50%, -50%)
 }
 
-.fa-circle-o-notch{
+.fa-circle-o-notch {
     color: #F2B705;
 }
 
-form>button{
+form>button {
     width: 100%;
 }
+
 /* Palette #1 */
 
 /* #034AA6 */

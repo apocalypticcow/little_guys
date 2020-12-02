@@ -22,7 +22,7 @@ async function authStateChanged(user) {
         currentUser = user;
     }
 
-    document.onLoadingDone(formId);
+    document.hideLoader();
 }
 
 function configInputs() {

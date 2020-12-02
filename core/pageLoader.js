@@ -12,7 +12,6 @@ function setupPageLoader() {
     $spinner.addClass('fa fa-circle-o-notch fa-spin fa-3x');
 }
 
-
 function hideLoader() {
     $(spinner).fadeOut();
     $(body).fadeIn();

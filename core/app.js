@@ -10,7 +10,10 @@ const appVersion = "1.2.1";
 document.appVersion = appVersion;
 document.isUserSignedIn = false;
 
+let navBarLoaded = false;
+
 $(document).ready(start);
+
 firebase.auth().onAuthStateChanged(function (user) {
     let isUserSignedIn;
     if (user) {
@@ -22,13 +25,17 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log("No user signed in yet.");
         isUserSignedIn = false;
     }
+
     document.isUserSignedIn = isUserSignedIn;
+    if (navBarLoaded) {
+        tryTo(setNavItemsVisibility, document.isUserSignedIn);
+    }
 });
 
 function start() {
     $("#topBar-container").load("top_bar.html", () => {
         console.log("Navbar loaded");
-        tryTo(setNavItemsVisibility, document.isUserSignedIn);
+        navBarLoaded = true;
     });
 }
 
@@ -70,10 +77,14 @@ function changeActiveLink() {
     if (isIndex) {
         let navLink = getElemById('navLocChange').firstElementChild;
         navLink.classList.add('active');
-    } else {
-        let href = window.location.pathname.replace("/", "");
-        let selector = "a[href='" + href + "'].nav-link";
-        let activeElem = document.querySelector(selector);
+        return;
+    }
+
+    let href = window.location.pathname.replace("/", "");
+    let selector = "a[href='" + href + "'].nav-link";
+
+    let activeElem = document.querySelector(selector);
+    if (activeElem) {
         activeElem.classList.add('active');
     }
 }

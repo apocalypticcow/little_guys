@@ -114,7 +114,8 @@ function setFormSubmitionAccess(turnOn) {
 
 function toggleShowAll() {
     showingAll = !showingAll;
-    setCollectionRef();
+    showAllBtn.innerHTML = showingAll ? "In City" : "Show all";
+    resetCollectionRef();
 }
 
 // Search button functionality
@@ -124,14 +125,8 @@ form.addEventListener("submit", (e) => {
 })
 
 
-function setCollectionRef() {
-    if (showingAll) {
-        showAllBtn.innerHTML = "In City";
-        currentBsRef = allBusinessRef;
-    } else {
-        showAllBtn.innerHTML = "Show all";
-        currentBsRef = cityFilteredRef;
-    }
+function resetCollectionRef() {
+    currentBsRef = showingAll ? allBusinessRef : cityFilteredRef;
     return currentBsRef;
 }
 
@@ -150,9 +145,9 @@ async function loadBusinesses() {
 function addFilter() {
     const input = form.searchBar.value.toLowerCase();
     if (input !== "") {
-        let ref = setCollectionRef();
+        let ref = resetCollectionRef();
         currentBsRef = ref.where("category", "==", input);
     } else {
-        currentBsRef = showAllBtn ? allBusinessRef : cityFilteredRef;
+        resetCollectionRef();
     }
 }

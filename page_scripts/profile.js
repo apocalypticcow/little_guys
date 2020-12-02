@@ -71,7 +71,7 @@ function clearFormInvalidMarks(event) {
 
 function setFormSubmitionAccess(turnOn) {
     let $spinner = $(getElemById('pageSpinner'));
-    turnOn ? $spinner.fadeIn() : $spinner.fadOut();
+    turnOn ? $spinner.fadeIn() : $spinner.fadeOut();
     inputsToToggle.forEach(elem => {
         elem.disabled = turnOn === false;
     });

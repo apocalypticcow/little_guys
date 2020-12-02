@@ -21,15 +21,17 @@ LittleGuys is a browser based web application for finding local shops and busine
 Base techs used for this project:
 * HTML, CSS
 * JavaScript
-* jQuery
+* [jQuery](https://jquery.com/)
+* [Bootstrap autocomplete](https://bootstrap-autocomplete.readthedocs.io/en/latest/)
+* 
 
-Stylizing techs:
-* Bootstrap
-* FontAwesome 5
-* Firebase UI
+Styles and layout:
+* [Bootstrap](https://getbootstrap.com/)
+* [FontAwesome 5](https://fontawesome.com/)
+* [Firebase UI](https://firebase.google.com/docs/auth/web/firebaseui)
 
-Database related techs:
-* Cloud FireStore
+Database:
+* [Cloud FireStore](https://firebase.google.com/docs/firestore)
 
 ***
 

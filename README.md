@@ -18,12 +18,12 @@ LittleGuys is a browser based web application for finding local shops and busine
 ***
 
 ## Technologies
-Base techs used for this project:
+Functional libraries used for this project:
 * HTML, CSS
 * JavaScript
 * [jQuery](https://jquery.com/)
 * [Bootstrap autocomplete](https://bootstrap-autocomplete.readthedocs.io/en/latest/)
-* 
+* [MapBox Geocode API](https://docs.mapbox.com/api/search/geocoding/)
 
 Styles and layout:
 * [Bootstrap](https://getbootstrap.com/)

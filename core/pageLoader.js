@@ -1,10 +1,10 @@
+let body = document.getElementsByTagName('body')[0];
+let spinner = document.createElement('i');
 hideBody();
 setupPageLoader();
 document.hideLoader = hidePageLoader;
-let spinner = document.createElement('i');
 
 function hideBody() {
-    let body = document.getElementsByTagName('body')[0];
     body.style.display = 'none';
 }
 

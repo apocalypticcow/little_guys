@@ -10,10 +10,11 @@ import {
     getSelected
 } from '../core/autocomplete.js';
 
-let searchInput = getElemById(getInputId);
+let searchInput = getElemById(getInputId());
 let formId = "searchForm";
 let form = getElemById(formId);
 
+$(document).ready(start);
 function start() {
     searchInput.focus();
     attachEvent("submit", formId, onSubmitted);
@@ -28,12 +29,10 @@ function onAutoCompleteChange() {
 function onSubmitted(event) {
     event.preventDefault();
     if (!locationValid) {
-        let searchField = getElemById(getInputId);
+        let searchField = getElemById(getInputId());
         searchField.classList.add('is-invalid');
     } else {
         localStorage.setItem("user-location", getSelected());
         window.location.href = '/home.html';
     }
 }
-
-$(document).ready(start);

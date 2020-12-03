@@ -9,14 +9,15 @@ const businessList = document.querySelector("#business-list");
 const form = document.querySelector("#search-container");
 const allBusinessRef = db.collection("businesses");
 
-document.currentBsRef = currentBsRef;
-document.cityFilteredRef = cityFilteredRef;
 
 let currentBsRef = allBusinessRef;
 let cityFilteredRef = allBusinessRef;
 
 const inputsToToggle = [];
 let showingAll = false;
+
+document.currentBsRef = currentBsRef;
+document.cityFilteredRef = cityFilteredRef;
 
 firebase.auth().onAuthStateChanged(handleAuthAsync);
 

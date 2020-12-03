@@ -63,13 +63,14 @@ function configToast() {
 
 function clearFormInvalidMarks(event) {
     getElemById(formId).classList.remove('was-validated');
-    if (event.target.id === getInputId) {
-        let searchField = getElemById(getInputId);
+    if (event.target.id === getInputId()) {
+        let searchField = getElemById(getInputId());
         searchField.classList.remove('is-invalid');
     }
 }
 
 function setInputsAccess(turnOn) {
+    const speed = "fast";
     // fade in-out spinner
     let $spinner = $(getElemById('pageSpinner'));
     !turnOn ? $spinner.fadeIn(speed) : $spinner.fadeOut(speed);
@@ -87,7 +88,7 @@ async function submitAsync(event) {
 
     // handle input validation
     if (!locationValid) {
-        let searchField = getElemById(getInputId);
+        let searchField = getElemById(getInputId());
         searchField.classList.add('is-invalid');
         setInputsAccess(true);
         return;

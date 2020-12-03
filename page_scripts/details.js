@@ -3,9 +3,6 @@ import {
 } from './firebase_api_littleguys.js';
 
 var docId = localStorage.getItem("docId");
-console.log(docId);
-
-
 
 getDetailsAsync();
 

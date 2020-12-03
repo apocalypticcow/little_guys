@@ -5,6 +5,7 @@ import {
 // Initialize the FirebaseUI Widget using Firebase.
 let auth = firebase.auth();
 
+// handle logout
 var queryString = decodeURIComponent(window.location.search);
 if (queryString) {
 
@@ -16,10 +17,6 @@ if (queryString) {
             });
     };
 }
-
-// const myParam = urlParams.get('myParam');
-
-
 
 var ui = new firebaseui.auth.AuthUI(auth);
 
@@ -64,7 +61,8 @@ var uiConfig = {
             if (loader) {
                 loader.style.display = 'none';
             }
-
+            
+            // toggle spinner and load page
             document.hideLoader();
         }
     },

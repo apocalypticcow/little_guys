@@ -14,8 +14,8 @@ import {
 } from '../core/autocomplete.js';
 
 const formId = "profileForm";
-
 const inputsToToggle = [];
+
 $(document).ready(start);
 
 function start() {
@@ -26,9 +26,9 @@ function start() {
     configToast();
 }
 
-let currentUser;
 firebase.auth().onAuthStateChanged(handleAuthAsync);
 
+let currentUser;
 async function handleAuthAsync(user) {
     if (user) {
         currentUser = user;
@@ -44,10 +44,10 @@ async function handleAuthAsync(user) {
 function configInputs() {
     let inputs = document.getElementsByTagName('input');
 
-    for (const element of inputs) {
-        if (element.type !== 'email') {
-            element.addEventListener('input', clearFormInvalidMarks);
-            inputsToToggle.push(element);
+    for (const inputElem of inputs) {
+        if (inputElem.type !== 'email') {
+            inputElem.addEventListener('input', clearFormInvalidMarks);
+            inputsToToggle.push(inputElem);
         }
     }
 }
@@ -70,28 +70,33 @@ function clearFormInvalidMarks(event) {
 }
 
 function setInputsAccess(turnOn) {
+    // fade in-out spinner
     let $spinner = $(getElemById('pageSpinner'));
-    turnOn ? $spinner.fadeOut("fast") : $spinner.fadeIn("fast");
-    inputsToToggle.forEach(elem => {
-        elem.disabled = turnOn === false;
-    });
+    !turnOn ? $spinner.fadeIn(speed) : $spinner.fadeOut(speed);
+    
+    // disabling-enabling inputs
+    inputsToToggle.forEach(elem => elem.disabled = turnOn === false);
 }
 
 async function submitAsync(event) {
     event.preventDefault();
     event.stopPropagation();
 
+    // disable inputs, show spinner
     setInputsAccess(false);
 
+    // handle input validation
     if (!locationValid) {
         let searchField = getElemById(getInputId);
         searchField.classList.add('is-invalid');
         setInputsAccess(true);
         return;
     }
-
+    
+    // update
     await updateUserAsync();
 
+    // post update functions
     afterProfileSaved();
     setInputsAccess(true);
 }
@@ -101,7 +106,6 @@ async function updateUserAsync() {
         .update({
             location: getSelected()
         })
-        .then()
         .catch(error => console.log(error));
 }
 

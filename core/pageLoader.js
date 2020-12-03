@@ -1,8 +1,12 @@
-let body = document.getElementsByTagName('body')[0];
-let spinner = document.createElement('i');
-body.style.display = 'none';
+hideBody();
 setupPageLoader();
-document.hideLoader = hideLoader;
+document.hideLoader = hidePageLoader;
+let spinner = document.createElement('i');
+
+function hideBody() {
+    let body = document.getElementsByTagName('body')[0];
+    body.style.display = 'none';
+}
 
 function setupPageLoader() {
     body.before(spinner);
@@ -11,7 +15,7 @@ function setupPageLoader() {
     $spinner.addClass('fa fa-circle-o-notch fa-spin fa-3x');
 }
 
-function hideLoader() {
+function hidePageLoader() {
     $(spinner).fadeOut();
     $(body).fadeIn();
 }

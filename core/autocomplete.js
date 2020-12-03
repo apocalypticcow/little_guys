@@ -56,7 +56,7 @@ function onChanged(event) {
 
     // set canSubmit so submit button can be set to enabled
     setValidity(input.value);
-    onChangedCallBack()
+    onChangedCallBack();
 }
 
 function getPossibleCities(qry, callback) {
@@ -74,24 +74,28 @@ function getPossibleCities(qry, callback) {
 
 function extractNames(data, callback) {
 
+    // filter to only cities in Canada
     let placesInCa = data.features
         .filter(feature => {
             let country = feature.context.find(ctx => ctx.id.startsWith("country"));
             return country.text == "Canada" && feature.place_type.includes("place");
         });
 
+    // Selecting only the text value of the results (cities in this context)
     let possiblePlaces = placesInCa.map(feature => feature.text);
 
     validList = possiblePlaces;
+
+    // this processes to show for the autocomplete input element
     callback(possiblePlaces);
 }
 
 function updateInputVal(location) {
-    // the autocomplete state hacking
+    // the autocomplete state programatic update
     searchInput.value = location;
     validList.push(location);
 
-    // manually trigger the event
+    // programaticly trigger the event since assigning above won't trigger it
     searchInput.dispatchEvent(new Event("change"));
 }
 

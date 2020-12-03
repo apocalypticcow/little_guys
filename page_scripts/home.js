@@ -8,40 +8,48 @@ import {
 const businessList = document.querySelector("#business-list");
 const form = document.querySelector("#search-container");
 const allBusinessRef = db.collection("businesses");
-let currentBsRef = allBusinessRef;
-let cityFilteredRef = allBusinessRef;
-let showingAll = false;
-const inputsToToggle = [];
+
 document.currentBsRef = currentBsRef;
 document.cityFilteredRef = cityFilteredRef;
 
-let showAllBtn = document.getElementById('showAllBtn').firstElementChild;
-showAllBtn.addEventListener('click', () => {
-    toggleShowAll();
-    tryToAsync(loadBusinessesAsync);
-});
+let currentBsRef = allBusinessRef;
+let cityFilteredRef = allBusinessRef;
 
-configInputs();
+const inputsToToggle = [];
+let showingAll = false;
 
 firebase.auth().onAuthStateChanged(handleAuthAsync);
+
+let showAllBtn = document.getElementById('showAllBtn').firstElementChild;
+showAllBtn.addEventListener('click', changeFilter);
+configInputs();
 
 async function handleAuthAsync(user) {
     let city;
     if (user) {
+        // user is signed in, get location to filter the list with
         let ref = db.collection('users').doc(user.uid);
         let snap = await ref.get();
         let dbUser = snap.data();
         city = dbUser.location;
     } else {
+        // user not signed in, try to get city from localStorage
         city = localStorage.getItem("user-location");
     }
 
-    setCollRefFilter(city);
+    addFilterToRef(city);
+    // this function threw a lot of errors, needed so at least the page can load
     await tryToAsync(loadBusinessesAsync);
+    // hide loader, show page
     document.hideLoader();
 }
 
-function setCollRefFilter(city) {
+function changeFilter(event) {
+    toggleShowAll();
+    tryToAsync(loadBusinessesAsync);
+}
+
+function addFilterToRef(city) {
     if (city && city !== "") {
         city = city.toLowerCase();
         currentBsRef = currentBsRef.where("city", "==", city);
@@ -98,26 +106,30 @@ function renderBusiness(doc) {
 function configInputs() {
     let inputs = document.getElementsByTagName('input');
 
-    for (const element of inputs) {
+    for (let element of inputs) {
         inputsToToggle.push(element);
     }
 }
 
-function setFormSubmitionAccess(turnOn) {
+function setInputsAccess(turnOn) {
+    const speed = "fast";
     let $spinner = $(document.getElementById('pageSpinner'));
-    turnOn ? $spinner.fadeOut("fast") : $spinner.fadeIn("fast");
-    inputsToToggle.forEach(elem => {
-        $(elem).disabled = turnOn === false;
-    });
 
+    // fade in-out spinner
+    !turnOn ? $spinner.fadeIn(speed) : $spinner.fadeOut(speed);
+
+    // disabling-enabling inputs
+    inputsToToggle.forEach(elem => $(elem).disabled = turnOn === false);
+
+    // fade in-out the businesses list
     let $list = $(document.getElementById('business-list'));
-    !turnOn ? $list.fadeOut("fast") : $list.fadeIn("fast");
+    !turnOn ? $list.fadeOut(speed) : $list.fadeIn(speed);
 }
 
 function toggleShowAll() {
     showingAll = !showingAll;
     showAllBtn.innerHTML = showingAll ? "In City" : "Show all";
-    resetCollectionRef();
+    resetCollRef();
 }
 
 // Search button functionality
@@ -126,30 +138,37 @@ form.addEventListener("submit", (e) => {
     tryToAsync(loadBusinessesAsync);
 })
 
-
-function resetCollectionRef() {
+function resetCollRef() {
     currentBsRef = showingAll ? allBusinessRef : cityFilteredRef;
     return currentBsRef;
 }
 
 // Get businesses
 async function loadBusinessesAsync() {
-    setFormSubmitionAccess(false);
+    // disable inputs, show spinner
+    setInputsAccess(false);
+
+    //clear list
     $(businessList).empty();
+
+    // set filter to the db ref
     addFilter();
+
+    // get the snapshot
     let snap = await currentBsRef.get();
-    snap.docs.forEach(doc => {
-        renderBusiness(doc);
-    });
-    setFormSubmitionAccess(true);
+    // process data
+    snap.docs.forEach(doc => renderBusiness(doc));
+
+    // enable inputs, hide spinner
+    setInputsAccess(true);
 }
 
 function addFilter() {
     const input = form.searchBar.value.toLowerCase();
     if (input !== "") {
-        let ref = resetCollectionRef();
+        let ref = resetCollRef();
         currentBsRef = ref.where("category", "==", input);
     } else {
-        resetCollectionRef();
+        resetCollRef();
     }
 }

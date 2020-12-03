@@ -6,6 +6,7 @@ import {
 let currentUser;
 const inputsToToggle = [];
 const formId = 'pwChangeForm';
+
 $(document).ready(start);
 
 function start() {
@@ -50,22 +51,22 @@ async function submitFormAsync(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    setFormSubmitionAccess(false);
+    // disable inputs, show spinner
+    setInputsAccess(false);
 
+    // create credential from loggged in user
     let credential = firebase.auth
         .EmailAuthProvider
         .credential(currentUser.email, getElemById('oldPasswordField').value);
 
+    // reauthenticating for the update
     await currentUser.reauthenticateWithCredential(credential)
         .catch(onReAuthenticateError);
-    await updatePwAsync();
-}
 
-async function updatePwAsync() {
+    // updating password
     await currentUser.updatePassword(getElemById('passwordField').value)
         .then(afterFormSaved)
         .catch(onPwUpdateError);
-
 }
 
 function onReAuthenticateError(error) {
@@ -97,18 +98,21 @@ function showInvalid(message, fieldId, feedbackId) {
 function onFormValidated() {
     const form = getElemById(formId);
     form.classList.add('was-validated');
-    setFormSubmitionAccess(true);
+    setInputsAccess(true);
 }
 
 function afterFormSaved() {
     let toast = getElemById('successToast');
     toast.style.zIndex = 0;
     $(toast).toast('show');
-    setFormSubmitionAccess(true);
+    setInputsAccess(true);
 }
 
-function setFormSubmitionAccess(turnOn) {
-    let spinner = getElemById('pageSpinner');
-    spinner.hidden = turnOn === true;
+function setInputsAccess(turnOn) {
+    const speed = "fast";
+    // fade in-out spinner
+    let $spinner = $(document.getElementById('pageSpinner'));
+    !turnOn ? $spinner.fadeIn(speed) : $spinner.fadeOut(speed);
+    // disabling-enabling inputs
     inputsToToggle.forEach(elem => elem.disabled = turnOn === false);
 }

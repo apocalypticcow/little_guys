@@ -2,7 +2,7 @@ import {
     db
 } from './firebase_api_littleguys.js';
 import {
-    tryTo
+    tryToAsync
 } from '../core/utils.js';
 
 const businessList = document.querySelector("#business-list");
@@ -18,12 +18,14 @@ document.cityFilteredRef = cityFilteredRef;
 let showAllBtn = document.getElementById('showAllBtn').firstElementChild;
 showAllBtn.addEventListener('click', () => {
     toggleShowAll();
-    tryTo(loadBusinesses);
+    tryToAsync(loadBusinessesAsync);
 });
 
 configInputs();
 
-firebase.auth().onAuthStateChanged(async function (user) {
+firebase.auth().onAuthStateChanged(handleAuthAsync);
+
+async function handleAuthAsync(user) {
     let city;
     if (user) {
         let ref = db.collection('users').doc(user.uid);
@@ -35,9 +37,9 @@ firebase.auth().onAuthStateChanged(async function (user) {
     }
 
     setCollRefFilter(city);
-    await tryTo(loadBusinesses);
+    await tryToAsync(loadBusinessesAsync);
     document.hideLoader();
-});
+}
 
 function setCollRefFilter(city) {
     if (city && city !== "") {
@@ -121,7 +123,7 @@ function toggleShowAll() {
 // Search button functionality
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    tryTo(loadBusinesses);
+    tryToAsync(loadBusinessesAsync);
 })
 
 
@@ -131,7 +133,7 @@ function resetCollectionRef() {
 }
 
 // Get businesses
-async function loadBusinesses() {
+async function loadBusinessesAsync() {
     setFormSubmitionAccess(false);
     $(businessList).empty();
     addFilter();

@@ -1,4 +1,3 @@
-
 let body = document.getElementsByTagName('body')[0];
 let spinner = document.createElement('i');
 body.style.display = 'none';

@@ -3,7 +3,7 @@ import {
 } from '../page_scripts/firebase_api_littleguys.js';
 import {
     getElemById,
-    tryTo
+    tryToAsync
 } from './utils.js';
 
 const appVersion = "1.4";
@@ -18,7 +18,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     let isUserSignedIn;
     if (user) {
         console.log("User is signed in");
-        tryTo(uploadUserLocation, user.uid)
+        tryToAsync(uploadUserLocation, user.uid)
         isUserSignedIn = true;
 
     } else {
@@ -28,7 +28,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 
     document.isUserSignedIn = isUserSignedIn;
     if (navBarLoaded) {
-        tryTo(setNavItemsVisibility, document.isUserSignedIn);
+        tryToAsync(setNavItemsVisibility, document.isUserSignedIn);
     }
 });
 

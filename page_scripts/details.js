@@ -7,17 +7,16 @@ console.log(docId);
 
 
 
-retrieveDetail();
+getDetailsAsync();
 
-async function retrieveDetail() {
+async function getDetailsAsync() {
     let ref = db.collection("businesses").doc(docId);
     let snap = await ref.get();
 
     renderDetails(snap.data());
-
 }
 
-function renderDetails(business){
+function renderDetails(business) {
 
     let li = document.createElement("li");
     let name = document.createElement("span");
@@ -52,4 +51,3 @@ function renderDetails(business){
 
     businessDetails.appendChild(li);
 }
-

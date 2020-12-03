@@ -12,8 +12,12 @@ const key = "&access_token=pk.eyJ1IjoiZ3JvdXAxMmJjaXQiLCJhIjoiY2todHkweTQyMGZhMT
 const searchInputId = "searchInput";
 const searchInput = getElemById(searchInputId);
 let validList = [];
-let isSelectionValid = false;
+let locationValid = false;
 let onChangedCallBack = function () {};
+
+function getInputId() {
+    return searchInputId;
+}
 
 function configAutoComplete(onChangedCallBack) {
     onChangedCallBack = onChangedCallBack;
@@ -22,7 +26,6 @@ function configAutoComplete(onChangedCallBack) {
     $searchInput.autoComplete({
         minLength: 3,
         resolver: 'custom',
-        preventEnter: true,
         events: {
             search: getPossibleCities
         }
@@ -32,14 +35,14 @@ function configAutoComplete(onChangedCallBack) {
     $searchInput.on("autocomplete.select", onSelected);
 }
 
-function getCity() {
+function getSelected() {
     return searchInput.value;
 }
 
 function setValidity(location) {
     let errorMsg = location === "" ? "Location must be provided!" : "Location is Invalid!";
     getElemById('loc-feedback').innerText = errorMsg;
-    isSelectionValid = validList.includes(location) && location !== "";
+    locationValid = validList.includes(location) && location !== "";
 }
 
 function onSelected(event, item) {
@@ -65,7 +68,7 @@ function getPossibleCities(qry, callback) {
         })
         .then((data) => extractNames(data, callback))
         .catch((err) => {
-            // Do something for an error here
+            console.log(err);
         });
 }
 
@@ -83,11 +86,19 @@ function extractNames(data, callback) {
     callback(possiblePlaces);
 }
 
+function updateInputVal(location) {
+    // the autocomplete state hacking
+    searchInput.value = location;
+    validList.push(location);
+
+    // manually trigger the event
+    searchInput.dispatchEvent(new Event("change"));
+}
+
 export {
-    isSelectionValid,
-    setValidity,
-    validList,
     configAutoComplete,
-    searchInputId,
-    getCity,
+    locationValid,
+    updateInputVal,
+    getInputId,
+    getSelected,
 }

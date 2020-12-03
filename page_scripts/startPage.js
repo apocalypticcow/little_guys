@@ -5,15 +5,14 @@ import {
 
 import {
     configAutoComplete,
-    searchInputId,
-    isSelectionValid,
-    getCity
+    getInputId,
+    locationValid,
+    getSelected
 } from '../core/autocomplete.js';
 
-let searchInput = getElemById(searchInputId);
+let searchInput = getElemById(getInputId);
 let formId = "searchForm";
 let form = getElemById(formId);
-let locFeedback = getElemById('loc-feedback');
 
 function start() {
     searchInput.focus();
@@ -22,22 +21,17 @@ function start() {
     document.hideLoader();
 }
 
-function onAutoCompleteChange(){
-    form.classList.remove('was-validated');
-    locFeedback.innerText = "Location must be provided.";
+function onAutoCompleteChange() {
+    form.classList.remove('is-invalid');
 }
 
 function onSubmitted(event) {
     event.preventDefault();
-    if (!isSelectionValid) {
-        searchInput.setCustomValidity("Please select an item from the list!");
-        
-        if (searchInput.value != "") {
-            locFeedback.innerText = "Please select an item from the list!";
-        }
-        form.classList.add('was-validated');
+    if (!locationValid) {
+        let searchField = getElemById(getInputId);
+        searchField.classList.add('is-invalid');
     } else {
-    localStorage.setItem("user-location", getCity());
+        localStorage.setItem("user-location", getSelected());
         window.location.href = '/home.html';
     }
 }

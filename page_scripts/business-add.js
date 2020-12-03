@@ -1,9 +1,11 @@
-import { db } from './firebase_api_littleguys.js';
+import {
+    db
+} from './firebase_api_littleguys.js';
 
 const form = document.querySelector("#busForm");
 
 // Saving data
-form.addEventListener("submit", (e) =>{
+form.addEventListener("submit", (e) => {
     e.preventDefault();
     db.collection("businesses").add({
         name: form.shopName.value,
@@ -24,4 +26,3 @@ form.addEventListener("submit", (e) =>{
     form.description.value = "";
     form.shopCategory.value = "";
 })
-

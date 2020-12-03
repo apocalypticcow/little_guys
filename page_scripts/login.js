@@ -14,8 +14,6 @@ if (queryString) {
             .then(() => {
                 window.location.replace("home.html");
             });
-
-        // return;
     };
 }
 
@@ -66,7 +64,7 @@ var uiConfig = {
             if (loader) {
                 loader.style.display = 'none';
             }
-            
+
             document.hideLoader();
         }
     },

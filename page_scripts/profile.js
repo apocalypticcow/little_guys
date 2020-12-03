@@ -6,11 +6,11 @@ import {
     attachEvent
 } from '../core/utils.js';
 import {
-    validList,
-    searchInputId,
+    updateInputVal,
+    getInputId,
     configAutoComplete,
-    isSelectionValid,
-    getCity
+    locationValid,
+    getSelected
 } from '../core/autocomplete.js';
 
 const formId = "profileForm";
@@ -19,7 +19,7 @@ const inputsToToggle = [];
 $(document).ready(start);
 
 function start() {
-    attachEvent("submit", formId, onSubmit);
+    attachEvent("submit", formId, submitAsync);
 
     configAutoComplete();
     configInputs();
@@ -27,15 +27,15 @@ function start() {
 }
 
 let currentUser;
-firebase.auth().onAuthStateChanged(authStateChanged);
+firebase.auth().onAuthStateChanged(handleAuthAsync);
 
-async function authStateChanged(user) {
+async function handleAuthAsync(user) {
     if (user) {
         currentUser = user;
 
         // using async function above and await here 
         // so the loading would run after the db aync calls
-        await fillFormWithData(user);
+        await fillFormAsync(user);
     }
 
     document.hideLoader();
@@ -63,8 +63,8 @@ function configToast() {
 
 function clearFormInvalidMarks(event) {
     getElemById(formId).classList.remove('was-validated');
-    if (event.target.id === searchInputId) {
-        let searchField = getElemById(searchInputId);
+    if (event.target.id === getInputId) {
+        let searchField = getElemById(getInputId);
         searchField.classList.remove('is-invalid');
     }
 }
@@ -77,29 +77,29 @@ function setInputsAccess(turnOn) {
     });
 }
 
-async function onSubmit(event) {
+async function submitAsync(event) {
     event.preventDefault();
     event.stopPropagation();
 
     setInputsAccess(false);
 
-    if (!isSelectionValid) {
-        let searchField = getElemById(searchInputId);
+    if (!locationValid) {
+        let searchField = getElemById(getInputId);
         searchField.classList.add('is-invalid');
         setInputsAccess(true);
         return;
     }
 
-    await updateUser();
+    await updateUserAsync();
 
     afterProfileSaved();
     setInputsAccess(true);
 }
 
-async function updateUser() {
+async function updateUserAsync() {
     await db.collection('users').doc(currentUser.uid)
         .update({
-            location: getCity()
+            location: getSelected()
         })
         .then()
         .catch(error => console.log(error));
@@ -111,12 +111,12 @@ function afterProfileSaved() {
     $(toast).toast('show');
 }
 
-async function fillFormWithData(user) {
-    let snap = await getUserFromDb(user.uid);
+async function fillFormAsync(user) {
+    let snap = await getDbUserAsync(user.uid);
     fillForm(snap);
 }
 
-async function getUserFromDb(userId) {
+async function getDbUserAsync(userId) {
     let userRef = db.collection('users').doc(userId);
     return await userRef.get();
 }
@@ -127,13 +127,6 @@ function fillForm(snap) {
     getElemById('emailField').value = userData.email;
 
     if (userData.location) {
-        let searchInput = getElemById(searchInputId);
-
-        // the autocomplete state hacking
-        searchInput.value = userData.location;
-        validList.push(userData.location);
-
-        // manually trigger the event
-        searchInput.dispatchEvent(new Event("change"));
+        updateInputVal(userData.location);
     }
 }

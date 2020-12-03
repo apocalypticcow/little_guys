@@ -9,14 +9,14 @@ const formId = 'pwChangeForm';
 $(document).ready(start);
 
 function start() {
-    attachEvent("submit", formId, onSubmitted);
+    attachEvent("submit", formId, submitFormAsync);
 
     configInputs();
     configToast();
 }
 
-firebase.auth().onAuthStateChanged(authStateChanged);
-async function authStateChanged(user) {
+firebase.auth().onAuthStateChanged(handleAuthAsync);
+async function handleAuthAsync(user) {
     if (user) {
         currentUser = user;
     }
@@ -46,7 +46,7 @@ function clearFormInvalidMarks(event) {
     getElemById(formId).classList.remove('was-validated');
 }
 
-async function onSubmitted(event) {
+async function submitFormAsync(event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -56,12 +56,12 @@ async function onSubmitted(event) {
         .EmailAuthProvider
         .credential(currentUser.email, getElemById('oldPasswordField').value);
 
-    currentUser.reauthenticateWithCredential(credential)
-        .then(updatePw)
+    await currentUser.reauthenticateWithCredential(credential)
         .catch(onReAuthenticateError);
+    await updatePwAsync();
 }
 
-async function updatePw() {
+async function updatePwAsync() {
     await currentUser.updatePassword(getElemById('passwordField').value)
         .then(afterFormSaved)
         .catch(onPwUpdateError);
